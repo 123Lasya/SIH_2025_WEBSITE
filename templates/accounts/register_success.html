@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .success-wrapper {
+    max-width: 480px;
+    margin: 70px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    font-family: "Inter", sans-serif;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .success-wrapper h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 15px;
+  }
+
+  .success-wrapper p {
+    font-size: 16px;
+    color: #4b5563;
+    margin-bottom: 25px;
+  }
+
+  .success-btn {
+    background: #0b2348;
+    color: white;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .success-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  }
+
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- ===================== UPDATED HTML ===================== -->
+
+<div class="success-wrapper">
+  <h2>Registration Successful</h2>
+  <p>Your account has been created successfully.</p>
+
+  <a href="{% url 'login' %}">
+    <button class="success-btn">Go to Login Page</button>
+  </a>
+</div>
+
+{% endblock %}

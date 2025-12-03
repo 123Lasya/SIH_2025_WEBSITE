@@ -1,0 +1,153 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .bank-wrapper {
+    max-width: 480px;
+    margin: 60px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    font-family: "Inter", sans-serif;
+  }
+
+  .bank-wrapper h2 {
+    text-align: center;
+    color: #0b2348;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 25px;
+  }
+
+  .bank-label {
+    font-weight: 600;
+    color: #4b5563;
+    margin-top: 14px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .bank-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: 0.25s ease;
+  }
+
+  .bank-input:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    outline: none;
+  }
+
+  .continue-btn {
+    width: 100%;
+    background: #0b2348;
+    color: #ffffff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 10px;
+    margin-top: 25px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .continue-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+</style>
+
+<!-- ===================== UPDATED HTML ===================== -->
+<div class="bank-wrapper">
+  <h2>Bank Details</h2>
+
+  <form method="post" id="bank-form">
+    {% csrf_token %}
+
+    <label class="bank-label">Account Holder Name</label>
+    <input type="text" name="holder" class="bank-input" id="holder" required />
+    <div id="holder-error" class="error-text"></div>
+
+    <label class="bank-label">Bank Name</label>
+    <input type="text" name="bank" class="bank-input" id="bank" required />
+    <div id="bank-error" class="error-text"></div>
+
+    <label class="bank-label">Account Number</label>
+    <input type="text" name="acc_no" class="bank-input" id="acc_no" required />
+    <div id="acc-error" class="error-text"></div>
+
+    <label class="bank-label">IFSC Code</label>
+    <input type="text" name="ifsc" class="bank-input" id="ifsc" required />
+    <div id="ifsc-error" class="error-text"></div>
+
+    <label class="bank-label">UPI ID (Optional)</label>
+    <input type="text" name="upi" class="bank-input" id="upi" />
+    <div id="upi-error" class="error-text"></div>
+
+    <button type="submit" class="continue-btn">Continue</button>
+  </form>
+</div>
+
+<!-- ===================== STRICT VALIDATION JS ===================== -->
+<script>
+  document.getElementById("bank-form").addEventListener("submit", function (e) {
+    let valid = true;
+
+    document
+      .querySelectorAll(".error-text")
+      .forEach((el) => (el.innerText = ""));
+
+    const holder = document.getElementById("holder").value.trim();
+    const bank = document.getElementById("bank").value.trim();
+    const acc = document.getElementById("acc_no").value.trim();
+    const ifsc = document.getElementById("ifsc").value.trim();
+    const upi = document.getElementById("upi").value.trim();
+
+    if (holder.length < 3) {
+      document.getElementById("holder-error").innerText =
+        "Enter a valid name (min 3 letters).";
+      valid = false;
+    }
+
+    if (bank.length < 3) {
+      document.getElementById("bank-error").innerText =
+        "Enter a valid bank name.";
+      valid = false;
+    }
+
+    if (!/^[0-9]{6,18}$/.test(acc)) {
+      document.getElementById("acc-error").innerText =
+        "Account number must be 6–18 digits.";
+      valid = false;
+    }
+
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/i.test(ifsc)) {
+      document.getElementById("ifsc-error").innerText =
+        "Invalid IFSC format (e.g., SBIN0123456).";
+      valid = false;
+    }
+
+    if (upi.length > 0 && !/^[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}$/.test(upi)) {
+      document.getElementById("upi-error").innerText = "Enter a valid UPI ID.";
+      valid = false;
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+
+{% endblock %}

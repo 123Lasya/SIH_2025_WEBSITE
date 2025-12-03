@@ -1,0 +1,129 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<style>
+  .edit-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0b2348;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 20px;
+  }
+
+  .edit-card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    max-width: 750px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    font-family: "Inter", sans-serif;
+  }
+
+  .edit-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+    display: block;
+    margin-top: 16px;
+  }
+
+  .edit-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: 0.25s ease;
+  }
+
+  .edit-input:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    outline: none;
+  }
+
+  .save-btn {
+    background: #0b2348;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    margin-top: 22px;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .save-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(11, 35, 72, 0.3);
+  }
+</style>
+
+<h2 class="edit-title">Edit Profile</h2>
+
+<div class="edit-card">
+  <form method="post">
+    {% csrf_token %}
+
+    <label class="edit-label">Name</label>
+    <input
+      type="text"
+      name="name"
+      class="edit-input"
+      value="{{ buyer.name }}"
+      required
+    />
+
+    <label class="edit-label">Mobile</label>
+    <input
+      type="text"
+      name="mobile"
+      class="edit-input"
+      value="{{ buyer.mobile }}"
+      required
+    />
+
+    <label class="edit-label">District</label>
+    <input
+      type="text"
+      name="district"
+      class="edit-input"
+      value="{{ buyer.district }}"
+      required
+    />
+
+    <label class="edit-label">Address</label>
+    <input
+      type="text"
+      name="address"
+      class="edit-input"
+      value="{{ buyer.address }}"
+      required
+    />
+
+    {% if buyer.gst_number %}
+    <label class="edit-label">GST Number</label>
+    <input
+      type="text"
+      name="gst_number"
+      class="edit-input"
+      value="{{ buyer.gst_number }}"
+    />
+    {% endif %} {% if buyer.shop_name %}
+    <label class="edit-label">Shop Name</label>
+    <input
+      type="text"
+      name="shop_name"
+      class="edit-input"
+      value="{{ buyer.shop_name }}"
+    />
+    {% endif %}
+
+    <button type="submit" class="save-btn">Save Changes</button>
+  </form>
+</div>
+
+{% endblock %}

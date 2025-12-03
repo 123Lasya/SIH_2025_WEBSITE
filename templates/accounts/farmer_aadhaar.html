@@ -1,0 +1,132 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  body {
+    background: #f7f9fc;
+    font-family: "Inter", sans-serif;
+  }
+
+  .aadhaar-wrapper {
+    max-width: 420px;
+    margin: 70px auto;
+    padding: 36px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+  }
+
+  .aadhaar-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .aadhaar-wrapper h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #0b2348;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+
+  .aadhaar-label {
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 20px;
+  }
+
+  .aadhaar-input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #f9fafb;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .aadhaar-input:focus {
+    background: #ffffff;
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    outline: none;
+  }
+
+  .verify-btn {
+    width: 100%;
+    background: #0b2348;
+    color: #ffffff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 12px;
+    margin-top: 28px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .verify-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(11, 35, 72, 0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+</style>
+
+<!-- ===================== UPDATED HTML UI ===================== -->
+<div class="aadhaar-wrapper">
+  <h2>Farmer Aadhaar Verification</h2>
+
+  <form method="post" id="aadhaar-form">
+    {% csrf_token %}
+
+    <label class="aadhaar-label">Aadhaar Number</label>
+    <input
+      type="text"
+      name="aadhaar"
+      class="aadhaar-input"
+      id="aadhaar"
+      placeholder="Enter 12-digit Aadhaar"
+      required
+      maxlength="12"
+    />
+    <div id="aadhaar-error" class="error-text"></div>
+
+    <button type="submit" class="verify-btn">Send OTP</button>
+  </form>
+</div>
+
+<!-- ===================== STRICT VALIDATION JS ===================== -->
+<script>
+  document
+    .getElementById("aadhaar-form")
+    .addEventListener("submit", function (e) {
+      let valid = true;
+      const aadhaar = document.getElementById("aadhaar").value.trim();
+      document.getElementById("aadhaar-error").innerText = "";
+
+      // Aadhaar must be exactly 12 digits
+      if (!/^[0-9]{12}$/.test(aadhaar)) {
+        document.getElementById("aadhaar-error").innerText =
+          "Aadhaar number must be exactly 12 digits.";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+</script>
+
+{% endblock %}

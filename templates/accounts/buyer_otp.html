@@ -1,0 +1,116 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .otp-wrapper {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    font-family: "Inter", sans-serif;
+    text-align: center;
+  }
+
+  .otp-wrapper h2 {
+    color: #0b2348;
+    margin-bottom: 22px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .otp-label {
+    font-weight: 600;
+    color: #4b5563;
+    display: block;
+    margin-bottom: 6px;
+    text-align: left;
+  }
+
+  .otp-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: 0.2s ease;
+  }
+
+  .otp-input:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    outline: none;
+  }
+
+  .otp-btn {
+    width: 100%;
+    background: #0b2348;
+    color: #ffffff;
+    padding: 13px 0;
+    border: none;
+    border-radius: 10px;
+    margin-top: 22px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .otp-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+</style>
+
+<!-- ===================== UPDATED HTML ===================== -->
+
+<div class="otp-wrapper">
+  <h2>Verify OTP</h2>
+
+  <form method="post" id="otp-form">
+    {% csrf_token %}
+
+    <label class="otp-label">Enter OTP</label>
+    <input
+      type="text"
+      name="otp"
+      class="otp-input"
+      id="otp"
+      placeholder="Enter OTP"
+      required
+    />
+    <div id="otp-error" class="error-text"></div>
+
+    <button type="submit" class="otp-btn">Verify OTP</button>
+  </form>
+</div>
+
+<!-- ===================== OTP VALIDATION JS ===================== -->
+<script>
+  document.getElementById("otp-form").addEventListener("submit", function (e) {
+    let valid = true;
+    document.getElementById("otp-error").innerText = "";
+
+    const otp = document.getElementById("otp").value.trim();
+
+    // OTP must be exactly 6 digits
+    if (!/^[0-9]{6}$/.test(otp)) {
+      document.getElementById("otp-error").innerText =
+        "OTP must be exactly 6 digits.";
+      valid = false;
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+
+{% endblock %}

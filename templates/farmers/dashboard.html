@@ -1,0 +1,185 @@
+{% extends "farmers/farmer_base.html" %} {% block farmer_content %}
+
+<style>
+  .dashboard-title {
+    font-family: "Inter", sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+  }
+
+  /* Quick Actions */
+  .quick-actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .quick-btn {
+    padding: 14px 26px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  .contracts-btn {
+    background: #0b2348;
+  }
+  .contracts-btn:hover {
+    background: #122e61;
+    transform: translateY(-2px);
+  }
+
+  .hedges-btn {
+    background: #2ba37a;
+  }
+  .hedges-btn:hover {
+    background: #238b65;
+    transform: translateY(-2px);
+  }
+
+  /* Card Styling */
+  .dashboard-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    margin-bottom: 28px;
+  }
+
+  .dashboard-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 14px;
+  }
+
+  /* Crop Buttons */
+  .crop-btn {
+    padding: 10px 22px;
+    background: #0b2348;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: 0.25s ease;
+  }
+
+  .crop-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(11, 35, 72, 0.28);
+  }
+
+  /* Alerts */
+  .alerts-box {
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    margin-top: 30px;
+  }
+
+  .alert-item {
+    padding: 14px;
+    margin-bottom: 10px;
+    background: #f7f9fc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #0b2348;
+  }
+</style>
+
+<h2 class="dashboard-title">Farmer Dashboard</h2>
+
+<!-- Quick Action Buttons -->
+<div class="quick-actions">
+  <a href="{% url 'farmer_my_contracts' %}" class="quick-btn contracts-btn">
+    My Contracts
+  </a>
+
+  <a href="{% url 'farmer_my_hedges' %}" class="quick-btn hedges-btn">
+    My Hedges
+  </a>
+</div>
+
+<!-- Crop Selector -->
+<div class="dashboard-card">
+  <h3>Select Crop</h3>
+  <button onclick="loadCrop('Groundnut')" class="crop-btn">Groundnut</button>
+  <button onclick="loadCrop('Soybean')" class="crop-btn">Soybean</button>
+  <button onclick="loadCrop('Sunflower')" class="crop-btn">Sunflower</button>
+</div>
+
+<!-- Today's Price -->
+<div class="dashboard-card">
+  <h3>Today's Market Price</h3>
+  <p style="font-size: 22px; font-weight: 700; color: #2ba37a">
+    <span id="todayPrice">Loading...</span>
+  </p>
+</div>
+
+<!-- Forecast Chart -->
+<div class="dashboard-card">
+  <h3>7-Day AI Price Forecast</h3>
+  <canvas id="forecastChart" style="width: 100%; max-width: 900px"></canvas>
+</div>
+
+<!-- Alerts Section -->
+<div class="alerts-box">
+  <h3>Recent Alerts</h3>
+
+  {% if alerts %} {% for a in alerts %}
+  <div class="alert-item">{{ a.message }}</div>
+  {% endfor %} {% else %}
+  <p>No alerts yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %} {% block farmer_extra_js %}
+<script>
+  let chartInstance = null;
+
+  function loadCrop(cropName) {
+    fetch(`/farmer/forecast-api/?crop=${cropName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        document.getElementById("todayPrice").innerText = data.prices[0] + " ₹";
+
+        if (chartInstance) chartInstance.destroy();
+
+        const ctx = document.getElementById("forecastChart");
+
+        chartInstance = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data.dates,
+            datasets: [
+              {
+                label: `${cropName} Price (₹)`,
+                data: data.prices,
+                borderColor: "#0b2348",
+                backgroundColor: "rgba(11,35,72,0.15)",
+                borderWidth: 2,
+                tension: 0.4,
+              },
+            ],
+          },
+        });
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => loadCrop("Groundnut"));
+</script>
+{% endblock %}

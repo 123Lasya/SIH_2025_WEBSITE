@@ -1,0 +1,118 @@
+{% extends 'farmers/farmer_base.html' %} {% block farmer_content %}
+
+<style>
+  .contracts-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+    font-family: "Inter", sans-serif;
+  }
+
+  .contracts-table-wrapper {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Inter", sans-serif;
+  }
+
+  th {
+    background: #0b2348;
+    color: white;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 500;
+  }
+
+  tr:hover td {
+    background: #f7f9fc;
+    transition: 0.25s ease;
+  }
+
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .pending {
+    background: #f59e0b;
+  }
+  .approved {
+    background: #2ba37a;
+  }
+  .rejected {
+    background: #dc2626;
+  }
+</style>
+
+<h2 class="contracts-title">My Contracts</h2>
+
+{% if contracts %}
+<div class="contracts-table-wrapper">
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Crop</th>
+      <th>Quantity</th>
+      <th>Grade A</th>
+      <th>Grade B</th>
+      <th>Grade C</th>
+      <th>Status</th>
+      <th>Buyer</th>
+      <th>Dates</th>
+      <th>Created</th>
+    </tr>
+
+    {% for c in contracts %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.crop }}</td>
+      <td>{{ c.quantity }}</td>
+      <td>{{ c.grade_a_price }}</td>
+      <td>{{ c.grade_b_price }}</td>
+      <td>{{ c.grade_c_price }}</td>
+
+      <td>
+        {% if c.buyer_status == "Pending" %}
+        <span class="status-badge pending">Pending</span>
+        {% elif c.buyer_status == "Approved" %}
+        <span class="status-badge approved">Approved</span>
+        {% else %}
+        <span class="status-badge rejected">Rejected</span>
+        {% endif %}
+      </td>
+
+      <td>
+        {% if c.buyer %} {{ c.buyer.username }} {% else %} --- {% endif %}
+      </td>
+
+      <td>{{ c.start_date }} → {{ c.end_date }}</td>
+      <td>{{ c.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% else %}
+<p>No contracts created yet.</p>
+{% endif %} {% endblock %}

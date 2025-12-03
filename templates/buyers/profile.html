@@ -1,0 +1,83 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<style>
+  .profile-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0b2348;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 20px;
+  }
+
+  .profile-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    max-width: 750px;
+    font-family: "Inter", sans-serif;
+  }
+
+  .info-row {
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #374151;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .edit-btn {
+    background: #0b2348;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: 0.25s ease;
+  }
+
+  .edit-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(11, 35, 72, 0.3);
+  }
+</style>
+
+<h2 class="profile-title">My Profile</h2>
+
+<div class="profile-card">
+  <p class="info-row"><span class="info-label">Name:</span> {{ buyer.name }}</p>
+
+  <p class="info-row">
+    <span class="info-label">Mobile:</span> {{ buyer.mobile }}
+  </p>
+
+  <p class="info-row">
+    <span class="info-label">District:</span> {{ buyer.district }}
+  </p>
+
+  <p class="info-row">
+    <span class="info-label">Address:</span> {{ buyer.address }}
+  </p>
+
+  {% if buyer.gst_number %}
+  <p class="info-row">
+    <span class="info-label">GST Number:</span> {{ buyer.gst_number }}
+  </p>
+  {% endif %} {% if buyer.shop_name %}
+  <p class="info-row">
+    <span class="info-label">Shop Name:</span> {{ buyer.shop_name }}
+  </p>
+  {% endif %}
+
+  <a href="{% url 'buyer_profile_edit' %}" class="edit-btn">Edit Profile</a>
+</div>
+
+{% endblock %}

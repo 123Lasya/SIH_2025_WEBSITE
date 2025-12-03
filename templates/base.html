@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <title>{% block title %}Krushi Kisan Suraksha{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: #f5f7fa;
+        color: #1f2937;
+      }
+
+      header {
+        background: #0b2348;
+        color: white;
+        padding: 25px 22px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 100%;
+      }
+
+      nav a {
+        color: white;
+        margin-right: 18px;
+        font-size: 14px;
+        transition: 0.2s;
+      }
+
+      nav a:hover {
+        opacity: 0.8;
+      }
+
+      /* FULL-WIDTH FIX */
+      .container {
+        width: auto;
+        max-width: 100%;
+        margin: 0;
+        padding: 0px 0px 25px 0px; /* comfortable screen padding */
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-wrapper">
+        <div><strong>Krushi Kisan Suraksha</strong></div>
+
+        <nav>
+          {% if user.is_authenticated %}
+          <a href="/accounts/logout/">Logout</a>
+
+          {% if user.is_staff or user.is_superuser %}
+          <a href="/panel/dashboard/">Admin Panel</a>
+
+          {% elif user.farmerprofile|default:None %}
+          <a href="/farmer/dashboard/">Dashboard</a>
+          <!-- prettier-ignore -->
+
+          {% elif user.buyerbusinessprofile|default:None or user.buyertraderprofile|default:None %}
+          <a href="/buyer/dashboard/">Dashboard</a>
+          {% endif %} {% else %}
+          <a href="/">Home</a>
+          <a href="/accounts/login/">Login</a>
+          <a href="/accounts/select-role/">Signup</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">{% block content %}{% endblock %}</main>
+  </body>
+</html>

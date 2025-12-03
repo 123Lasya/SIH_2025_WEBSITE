@@ -1,0 +1,300 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  body {
+    font-family: "Inter", sans-serif;
+    background: #f7f9fc;
+  }
+
+  .farmer-wrapper {
+    max-width: 550px;
+    margin: 50px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+  }
+
+  .farmer-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  }
+
+  .farmer-wrapper h2 {
+    text-align: center;
+    color: #0b2348;
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 25px;
+  }
+
+  .farmer-wrapper h3 {
+    color: #0b2348;
+    margin-top: 30px;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .farmer-label {
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+
+  .farmer-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #f9fafb;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+
+  .farmer-input:focus {
+    background: #ffffff;
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    outline: none;
+  }
+
+  .crop-checkbox {
+    margin: 8px 0;
+    font-weight: 500;
+    color: #4b5563;
+  }
+
+  .continue-btn {
+    width: 100%;
+    background: #0b2348;
+    color: #ffffff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 12px;
+    margin-top: 26px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .continue-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(11, 35, 72, 0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    margin-top: 4px;
+    font-size: 13px;
+    padding-left: 2px;
+  }
+</style>
+
+<!-- ===================== UPDATED FORM HTML ===================== -->
+
+<div class="farmer-wrapper">
+  <h2>Farmer Registration</h2>
+
+  <form method="post" id="farmer-form">
+    {% csrf_token %}
+
+    <label class="farmer-label">Full Name</label>
+    <input
+      type="text"
+      name="full_name"
+      class="farmer-input"
+      id="full_name"
+      required
+    />
+    <div id="name-error" class="error-text"></div>
+
+    <label class="farmer-label">Email</label>
+    <input type="email" name="email" class="farmer-input" id="email" required />
+    <div id="email-error" class="error-text"></div>
+
+    <label class="farmer-label">Password</label>
+    <input
+      type="password"
+      name="password"
+      class="farmer-input"
+      id="password"
+      required
+    />
+    <div id="password-error" class="error-text"></div>
+
+    <label class="farmer-label">Confirm Password</label>
+    <input
+      type="password"
+      name="confirm"
+      class="farmer-input"
+      id="confirm"
+      required
+    />
+    <div id="confirm-error" class="error-text"></div>
+
+    <label class="farmer-label">Mobile Number</label>
+    <input
+      type="text"
+      name="mobile"
+      class="farmer-input"
+      id="mobile"
+      required
+    />
+    <div id="mobile-error" class="error-text"></div>
+
+    <label class="farmer-label">Alternate Mobile</label>
+    <input type="text" name="alt_mobile" class="farmer-input" id="alt_mobile" />
+    <div id="altmobile-error" class="error-text"></div>
+
+    <label class="farmer-label">Village</label>
+    <input
+      type="text"
+      name="village"
+      class="farmer-input"
+      id="village"
+      required
+    />
+    <div id="village-error" class="error-text"></div>
+
+    <label class="farmer-label">Mandal</label>
+    <input
+      type="text"
+      name="mandal"
+      class="farmer-input"
+      id="mandal"
+      required
+    />
+    <div id="mandal-error" class="error-text"></div>
+
+    <label class="farmer-label">District</label>
+    <input
+      type="text"
+      name="district"
+      class="farmer-input"
+      id="district"
+      required
+    />
+    <div id="district-error" class="error-text"></div>
+
+    <label class="farmer-label">Land Size (acres)</label>
+    <input
+      type="text"
+      name="land_size"
+      class="farmer-input"
+      id="land_size"
+      required
+    />
+    <div id="land-error" class="error-text"></div>
+
+    <h3>Select Crops Grown</h3>
+
+    <label class="crop-checkbox"
+      ><input type="checkbox" name="crop_groundnut" /> Groundnut</label
+    >
+    <label class="crop-checkbox"
+      ><input type="checkbox" name="crop_soybean" /> Soybean</label
+    >
+    <label class="crop-checkbox"
+      ><input type="checkbox" name="crop_sunflower" /> Sunflower</label
+    >
+    <div id="crop-error" class="error-text"></div>
+
+    <button type="submit" class="continue-btn">Continue</button>
+  </form>
+</div>
+
+<!-- ===================== VALIDATION JAVASCRIPT ===================== -->
+
+<script>
+  document
+    .getElementById("farmer-form")
+    .addEventListener("submit", function (e) {
+      let valid = true;
+
+      document
+        .querySelectorAll(".error-text")
+        .forEach((el) => (el.innerText = ""));
+
+      const name = full_name.value.trim();
+      const email = email.value.trim();
+      const pwd = password.value.trim();
+      const confirmPwd = confirm.value.trim();
+      const mobile = mobile.value.trim();
+      const altmobile = alt_mobile.value.trim();
+      const village = village.value.trim();
+      const mandal = mandal.value.trim();
+      const district = district.value.trim();
+      const land = land_size.value.trim();
+
+      const crop1 = document.querySelector(
+        "input[name='crop_groundnut']"
+      ).checked;
+      const crop2 = document.querySelector(
+        "input[name='crop_soybean']"
+      ).checked;
+      const crop3 = document.querySelector(
+        "input[name='crop_sunflower']"
+      ).checked;
+
+      if (name.length < 3) {
+        name_error.innerText = "Enter a valid full name.";
+        valid = false;
+      }
+
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        email_error.innerText = "Enter a valid email.";
+        valid = false;
+      }
+
+      if (pwd.length < 4) {
+        password_error.innerText = "Password must be at least 4 characters.";
+        valid = false;
+      }
+
+      if (pwd !== confirmPwd) {
+        confirm_error.innerText = "Passwords do not match.";
+        valid = false;
+      }
+
+      if (!/^[6-9]\d{9}$/.test(mobile)) {
+        mobile_error.innerText = "Enter a valid 10-digit mobile number.";
+        valid = false;
+      }
+
+      if (altmobile.length > 0 && !/^[6-9]\d{9}$/.test(altmobile)) {
+        altmobile_error.innerText = "Alternate mobile must be 10 digits.";
+        valid = false;
+      }
+
+      if (village.length < 2)
+        (village_error.innerText = "Enter a valid village."), (valid = false);
+      if (mandal.length < 2)
+        (mandal_error.innerText = "Enter a valid mandal."), (valid = false);
+      if (district.length < 2)
+        (district_error.innerText = "Enter a valid district."), (valid = false);
+
+      if (!/^[0-9]{1,4}$/.test(land)) {
+        land_error.innerText = "Enter valid land size (acres).";
+        valid = false;
+      }
+
+      if (!crop1 && !crop2 && !crop3) {
+        crop_error.innerText = "Select at least one crop.";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+</script>
+
+{% endblock %}

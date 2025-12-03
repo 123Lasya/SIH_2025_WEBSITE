@@ -1,0 +1,52 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<h2>Contract #{{ contract.id }}</h2>
+
+<div style="border: 1px solid #ccc; padding: 20px">
+  <p><strong>Farmer:</strong> {{ contract.farmer.full_name }}</p>
+  <p><strong>Crop:</strong> {{ contract.crop }}</p>
+  <p><strong>Quantity:</strong> {{ contract.quantity }} kg</p>
+
+  <p><strong>Grade A:</strong> ₹{{ contract.grade_a_price }}</p>
+  <p><strong>Grade B:</strong> ₹{{ contract.grade_b_price }}</p>
+  <p><strong>Grade C:</strong> ₹{{ contract.grade_c_price }}</p>
+
+  <p><strong>Warehouse:</strong> {{ contract.warehouse }}</p>
+  <p><strong>Start:</strong> {{ contract.start_date }}</p>
+  <p><strong>End:</strong> {{ contract.end_date }}</p>
+
+  <hr />
+
+  <form method="post">
+    {% csrf_token %}
+
+    <button
+      name="action"
+      value="ACCEPT"
+      style="
+        background: green;
+        padding: 10px 20px;
+        color: white;
+        border-radius: 8px;
+      "
+    >
+      Accept
+    </button>
+
+    <button
+      name="action"
+      value="REJECT"
+      style="
+        background: red;
+        padding: 10px 20px;
+        margin-left: 10px;
+        color: white;
+        border-radius: 8px;
+      "
+    >
+      Reject
+    </button>
+  </form>
+</div>
+
+{% endblock %}

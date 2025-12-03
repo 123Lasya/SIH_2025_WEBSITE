@@ -1,0 +1,130 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<style>
+  .contract-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 900px;
+  }
+
+  .contract-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: 0.25s ease;
+    font-family: "Inter", sans-serif;
+  }
+
+  .contract-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
+  }
+
+  .contract-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 14px;
+  }
+
+  .row {
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+
+  .label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .value-green {
+    color: #2ba37a;
+    font-weight: 600;
+  }
+
+  .value-orange {
+    color: #f59e0b;
+    font-weight: 600;
+  }
+
+  .value-red {
+    color: #dc2626;
+    font-weight: 600;
+  }
+
+  .view-btn {
+    background: #0b2348;
+    color: white;
+    padding: 9px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 12px;
+    transition: 0.2s ease;
+  }
+
+  .view-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+  }
+
+  .no-data {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #6b7280;
+  }
+</style>
+
+<h2 style="color: #0b2348; font-weight: 700; margin-bottom: 20px">
+  My Contracts
+</h2>
+
+{% if contracts %}
+<div class="contract-list">
+  {% for c in contracts %}
+  <div class="contract-card">
+    <!-- Title -->
+    <div class="contract-title">{{ c.crop }} — {{ c.quantity }} kg</div>
+
+    <!-- Status -->
+    <div class="row">
+      <span class="label">Status:</span>
+      {% if c.buyer_status == "PENDING" %}
+      <span class="value-orange">Pending</span>
+      {% elif c.buyer_status == "ACCEPTED" %}
+      <span class="value-green">Accepted</span>
+      {% else %}
+      <span class="value-red">Rejected</span>
+      {% endif %}
+    </div>
+
+    <!-- Farmer -->
+    <div class="row">
+      <span class="label">Farmer:</span> {{ c.farmer.full_name }}
+    </div>
+
+    <!-- Warehouse -->
+    <div class="row">
+      <span class="label">Warehouse:</span> {{ c.warehouse }}
+    </div>
+
+    <!-- Dates -->
+    <div class="row">
+      <span class="label">Contract Duration:</span>
+      {{ c.start_date }} → {{ c.end_date }}
+    </div>
+
+    <!-- View button -->
+    <a href="{% url 'buyer_contract_detail' c.id %}" class="view-btn">
+      View Details
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<p class="no-data">No contracts found.</p>
+{% endif %} {% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'farmers/farmer_base.html' %} {% block farmer_content %}
+
+<!-- ===================== PAGE HEADING ===================== -->
+<h2
+  style="
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+  "
+>
+  My Hedges
+</h2>
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .hedge-card {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.07);
+    margin-bottom: 20px;
+    font-family: "Inter", sans-serif;
+    transition: 0.25s ease;
+  }
+
+  .hedge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .hedge-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 8px;
+  }
+
+  .hedge-info {
+    font-size: 15px;
+    margin: 3px 0;
+    color: #4b5563;
+  }
+
+  .hedge-badge {
+    display: inline-block;
+    background: #2ba37a;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .empty-message {
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #475569;
+    text-align: center;
+  }
+</style>
+
+<!-- ===================== HEDGE CARDS ===================== -->
+{% if hedges %} {% for h in hedges %}
+<div class="hedge-card">
+  <div class="hedge-title">Hedge #{{ h.id }} – {{ h.crop }}</div>
+
+  <div class="hedge-badge">Duration: {{ h.duration_days }} days</div>
+
+  <p class="hedge-info"><strong>Quantity:</strong> {{ h.quantity }} kg</p>
+  <p class="hedge-info"><strong>Hedge Price:</strong> ₹{{ h.hedge_price }}</p>
+  <p class="hedge-info"><strong>Created At:</strong> {{ h.created_at }}</p>
+</div>
+{% endfor %} {% else %}
+<div class="empty-message">No hedges created yet.</div>
+{% endif %} {% endblock %}

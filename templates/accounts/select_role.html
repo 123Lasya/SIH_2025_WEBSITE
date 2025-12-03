@@ -1,0 +1,68 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .role-wrapper {
+    max-width: 420px;
+    margin: 70px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+    font-family: "Inter", sans-serif;
+    text-align: center;
+  }
+
+  .role-wrapper h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 30px;
+  }
+
+  .role-btn {
+    width: 100%;
+    background: #0b2348;
+    color: #ffffff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    margin-bottom: 18px;
+  }
+
+  .role-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  }
+
+  .role-link {
+    display: block;
+    text-decoration: none;
+  }
+</style>
+
+<!-- ===================== UPDATED HTML ===================== -->
+
+<div class="role-wrapper">
+  <h2>Select Your Role</h2>
+
+  <a href="/accounts/farmer/aadhaar/" class="role-link">
+    <button class="role-btn">Farmer</button>
+  </a>
+
+  <a href="/accounts/buyer/email/" class="role-link">
+    <button class="role-btn">Buyer</button>
+  </a>
+
+  <a href="/accounts/login/" class="role-link">
+    <button class="role-btn">Admin Login</button>
+  </a>
+</div>
+
+{% endblock %}

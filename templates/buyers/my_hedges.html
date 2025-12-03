@@ -1,0 +1,83 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<style>
+  .hedge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 850px;
+  }
+
+  .hedge-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: 0.25s ease;
+    font-family: "Inter", sans-serif;
+  }
+
+  .hedge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .hedge-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 12px;
+  }
+
+  .hedge-row {
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+
+  .hedge-label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .hedge-value {
+    color: #2ba37a;
+    font-weight: 600;
+  }
+
+  .no-data {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #6b7280;
+  }
+</style>
+
+<h2 style="color: #0b2348; font-weight: 700; margin-bottom: 20px">My Hedges</h2>
+
+{% if hedges %}
+<div class="hedge-list">
+  {% for h in hedges %}
+  <div class="hedge-card">
+    <div class="hedge-title">{{ h.crop }} — {{ h.quantity }} kg</div>
+
+    <div class="hedge-row">
+      <span class="hedge-label">Hedge Price:</span>
+      <span class="hedge-value">₹{{ h.hedge_price }}</span>
+    </div>
+
+    <div class="hedge-row">
+      <span class="hedge-label">End Date:</span>
+      {{ h.end_date }}
+    </div>
+
+    <div class="hedge-row">
+      <span class="hedge-label">Created:</span>
+      {{ h.created_at }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<p class="no-data">No hedges created yet.</p>
+{% endif %} {% endblock %}

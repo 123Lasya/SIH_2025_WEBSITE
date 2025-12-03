@@ -1,0 +1,101 @@
+krushi_portal/
+│
+├── manage.py
+├── requirements.txt
+├── README.md
+│
+├── krushi_portal/                 # Main Django settings folder
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+│
+├── accounts/                      # Signup, Login, OTP, Farmer/Buyer profile creation
+│   ├── __init__.py
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── forms.py
+│   └── utils.py                   # Email OTP / Aadhaar verification helper functions
+│
+├── farmers/                       # Farmer Dashboard, Hedge, Contract, Alerts
+│   ├── __init__.py
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── forms.py
+│
+├── buyers/                        # Buyer Dashboard + hedge acceptance
+│   ├── __init__.py
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── forms.py
+│
+├── adminpanel/                    # Admin analytics + retrieve data
+│   ├── __init__.py
+│   ├── views.py
+│   ├── urls.py
+│   └── models.py (optional – admin mostly reads existing tables)
+│
+├── core/                          # Landing page, public pages
+│   ├── __init__.py
+│   ├── views.py
+│   └── urls.py
+│
+├── templates/                     # ⭐ GLOBAL HTML FILES (VERY EASY FOR YOU TO EDIT)
+│   ├── base.html
+│
+│   ├── core/
+│   │   ├── index.html
+│   │   └── about.html
+│
+│   ├── accounts/                  # All signup/login/OTP pages
+│   │   ├── select_role.html
+│   │   ├── login.html
+│   │   ├── logout_confirm.html
+│   │   │
+│   │   ├── farmer_aadhaar.html
+│   │   ├── farmer_otp.html
+│   │   ├── farmer_register.html
+│   │   ├── farmer_bank.html
+│   │   │
+│   │   ├── buyer_email.html
+│   │   ├── buyer_otp.html
+│   │   ├── buyer_type.html
+│   │   ├── buyer_business_info.html
+│   │   ├── buyer_trader_info.html
+│   │   └── buyer_bank.html
+│
+│   ├── farmers/
+│   │   ├── dashboard.html
+│   │   ├── hedge_create.html
+│   │   ├── hedge_list.html
+│   │   ├── contract_create.html
+│   │   ├── contract_list.html
+│   │   ├── education.html
+│   │   ├── govt_support.html
+│   │   ├── alerts.html
+│   │   └── profile.html
+│
+│   ├── buyers/
+│   │   ├── dashboard.html
+│   │   ├── hedges_available.html
+│   │   ├── contracts.html
+│   │   └── alerts.html
+│
+│   └── adminpanel/
+│       ├── admin_login.html
+│       ├── dashboard.html
+│       └── display.html
+│
+│
+└── static/                           # ⭐ GLOBAL STATIC FILES
+    ├── css/
+    │   └── style.css                 # One simple CSS file (easy for you)
+    │
+    ├── js/
+    │   └── main.js                   # Simple JavaScript functions (optional)
+    │
+    └── images/                       # Logo, icons, visuals
