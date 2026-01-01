@@ -285,3 +285,48 @@ def export_hedges_excel(request):
     response["Content-Disposition"] = 'attachment; filename="hedges.xlsx"'
     wb.save(response)
     return response
+@admin_only
+def admin_hedge_summary(request):
+    from farmers.models import FarmerHedge
+    from buyers.models import BuyerHedge
+    from core.ai_utils import predict_price
+    from datetime import date
+    s=0
+    today = date.today()
+
+    # ---------- PUT SIDE (Farmers) ----------
+    farmer_rows = []
+    for h in FarmerHedge.objects.all():
+        farmer_rows.append({
+            "farmer": h.farmer.user.first_name or h.farmer.user.username,
+            "quantity": h.quantity,
+            "hedge_amount": h.hedge_price,
+            "market_price": predict_price(h.crop, today),
+        })
+
+    # ---------- CALL SIDE (Buyers) ----------
+    buyer_rows = []
+    for h in BuyerHedge.objects.all():
+        buyer_rows.append({
+            "buyer": h.buyer.first_name or h.buyer.username,
+            "quantity": h.quantity,
+            "hedge_amount": h.hedge_price,
+        })
+        s+=h.hedge_price
+    for i in range(0,len(buyer_rows)):
+        h=s-s 
+    
+    # ---------- ALIGN TABLE ----------
+    max_len = max(len(farmer_rows), len(buyer_rows))
+    while len(farmer_rows) < max_len:
+        farmer_rows.append(None)
+    while len(buyer_rows) < max_len:
+        buyer_rows.append(None)
+
+    combined = zip(farmer_rows, buyer_rows)
+
+    return render(
+        request,
+        "panel/hedge_summary.html",
+        {"combined": combined,"count":{'1','2'}}
+    )

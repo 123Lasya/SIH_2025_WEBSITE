@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  .card {
+    max-width: 480px;
+    background: #fff;
+    margin: 40px auto;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    font-family: "Inter", sans-serif;
+  }
+
+  .card h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0b2348;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .balance-box {
+    background: #f7f9fc;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    font-size: 16px;
+  }
+
+  .input-box input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: #0b2348;
+    color: white;
+    padding: 14px;
+    margin-top: 18px;
+    border-radius: 10px;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .btn-primary:hover {
+    background: #132e63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  }
+</style>
+
+<div class="card">
+  <h2>Add Money</h2>
+
+  <div class="balance-box">
+    <strong>Current Wallet Balance:</strong> ₹{{ wallet.balance }}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <label><strong>Enter Amount to Add:</strong></label>
+    <div class="input-box">
+      <input type="number" name="amount" min="1" required />
+    </div>
+
+    <button class="btn-primary">Add Money</button>
+  </form>
+</div>
+
+{% endblock %}

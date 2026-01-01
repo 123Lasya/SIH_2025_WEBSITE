@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block main_class %}homepage-container{% endblock %}
+{% block title %}होम | Krushi Kisan Suraksha{% endblock %} {% block content %}
+
+<!-- ===================== HERO SECTION ===================== -->
+<style>
+  /* keep same styles as English index (omitted for brevity) */
+</style>
+
+<div class="hero-section">
+  <h1 class="hero-title">कृषि किसान सुरक्षा में आपका स्वागत है</h1>
+
+  <p class="hero-subtext">
+    यह प्लेटफ़ॉर्म तेल बीज किसानों को हेजिंग और स्मार्ट अनुबंधों के माध्यम से
+    मूल्य जोखिम प्रबंधित करने में मदद करता है।
+  </p>
+
+  <a href="/accounts/select-role/" class="primary-btn">शुरू करें</a>
+  <a href="#learn-more" class="secondary-btn">अधिक जानें</a>
+</div>
+
+<!-- ===================== FEATURES SECTION ===================== -->
+<h2 class="features-title" id="learn-more">यह प्लेटफ़ॉर्म क्यों?</h2>
+
+<div class="feature-grid">
+  <div class="feature-card reveal-on-scroll">
+    <div class="feature-title">7 दिनों के लिए AI-आधारित मूल्य पूर्वानुमान।</div>
+    <p class="feature-text">
+      किसानों को बिक्री की योजना बनाने और अल्पकालिक मूल्य अस्थिरता से आय की रक्षा करने में मदद करता है।
+    </p>
+  </div>
+
+  <div class="feature-card reveal-on-scroll">
+    <div class="feature-title">किसानों और खरीदारों के बीच डिजिटल हेजिंग अनुबंध।</div>
+    <p class="feature-text">
+      पारदर्शी, टेम्पर-प्रतिरोधी अनुबंध जो दोनों पक्षों के नियम सुरक्षित करते हैं।
+    </p>
+  </div>
+
+  <div class="feature-card reveal-on-scroll">
+    <div class="feature-title">सुरक्षित स्टोरेज (ब्लॉकचेन-तैयार)।</div>
+    <p class="feature-text">
+      सभी समझौतों और रिकॉर्ड को सुरक्षित रूप से संग्रहीत किया जाता है, भविष्य के ब्लॉकचेन
+      एकीकरण के साथ तैयार।
+    </p>
+  </div>
+</div>
+
+<!-- ===================== FOOTER SECTION ===================== -->
+<div class="footer reveal-on-scroll">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-title">हमारे बारे में</div>
+      <p class="footer-text">भारत सरकार की कृषि पहल — किसानों की सुरक्षा के लिए।</p>
+    </div>
+
+    <div>
+      <div class="footer-title">सहायता</div>
+      <a href="/help" class="footer-link">FAQ</a><br />
+      <a href="/contact" class="footer-link">संपर्क करें</a><br />
+      <a href="/faq" class="footer-link">हेल्प सेंटर</a>
+    </div>
+
+    <div>
+      <div class="footer-title">कानूनी</div>
+      <a href="/terms" class="footer-link">नियम एवं शर्तें</a><br />
+      <a href="/privacy" class="footer-link">गोपनीयता</a><br />
+      <a href="/disclaimer" class="footer-link">अस्वीकरण</a>
+    </div>
+
+    <div>
+      <div class="footer-title">संपर्क</div>
+      <p class="footer-text">
+        ईमेल:<br />
+        support@krishisetu.gov.in<br /><br />
+        फोन: 1800-KRISHISETU
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

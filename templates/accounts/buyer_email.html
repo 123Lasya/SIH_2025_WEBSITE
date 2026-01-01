@@ -1,109 +1,153 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- ===================== IN-PAGE CSS ===================== -->
 <style>
-  .email-wrapper {
-    max-width: 420px;
-    margin: 60px auto;
-    padding: 32px;
+  .verify-page {
+    width: 100%;
+    min-height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background: #f5f7fa;
+  }
+
+  .verify-card {
+    width: 420px;
     background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
-    font-family: "Inter", sans-serif;
+    padding: 35px 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    animation: fadeIn 0.55s ease-out;
   }
 
-  .email-wrapper h2 {
-    text-align: center;
-    margin-bottom: 22px;
+  .verify-icon {
+    font-size: 48px;
     color: #0b2348;
-    font-size: 26px;
-    font-weight: 700;
+    display: block;
+    text-align: center;
+    margin-bottom: 8px;
   }
 
-  .email-label {
+  .verify-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 5px;
+  }
+
+  .verify-subtext {
+    text-align: center;
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  .verify-label {
     font-weight: 600;
     color: #4b5563;
     display: block;
+    margin-top: 12px;
     margin-bottom: 6px;
-    margin-top: 14px;
   }
 
-  .email-input {
+  .verify-input {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
     font-size: 15px;
-    transition: 0.2s ease;
-  }
-
-  .email-input:focus {
-    border-color: #0b2348;
-    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
-    outline: none;
-  }
-
-  .send-btn {
-    width: 100%;
-    background: #0b2348;
-    color: #ffffff;
-    padding: 13px 0;
-    border: none;
-    border-radius: 10px;
-    margin-top: 22px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
     transition: 0.25s ease;
   }
 
-  .send-btn:hover {
-    background: #132f63;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  .verify-input:focus {
+    border-color: #0b2348;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.2);
   }
 
-  .error-text {
+  .error-message {
     color: #dc2626;
-    margin-top: 4px;
     font-size: 14px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .verify-btn {
+    width: 100%;
+    margin-top: 26px;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, #0b2348, #193a63);
+    color: #fff;
+    transition: 0.25s ease;
+    cursor: pointer;
+  }
+
+  .verify-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.3);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
-<!-- ===================== UPDATED HTML UI ===================== -->
+<!-- ===================== VERIFICATION CARD ===================== -->
+<div class="verify-page">
+  <div class="verify-card">
+    <i class="bi bi-envelope-check-fill verify-icon"></i>
 
-<div class="email-wrapper">
-  <h2>Buyer Email Verification</h2>
+    <h2 class="verify-title">Verify Your Email</h2>
+    <p class="verify-subtext">Enter your email to receive an OTP</p>
 
-  <form method="post" id="email-form">
-    {% csrf_token %}
+    <form method="post" id="email-form">
+      {% csrf_token %}
 
-    <label class="email-label">Email Address</label>
-    <input type="email" name="email" class="email-input" id="email" required />
-    <div id="email-error" class="error-text"></div>
+      <label class="verify-label">Email Address</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="verify-input"
+        required
+      />
+      <div id="email-error" class="error-message" style="display: none"></div>
 
-    <button type="submit" class="send-btn">Send OTP</button>
-  </form>
+      <button type="submit" class="verify-btn">Send OTP</button>
+    </form>
+  </div>
 </div>
 
-<!-- ===================== EMAIL VALIDATION JS ===================== -->
+<!-- ===================== EMAIL VALIDATION (unchanged logic) ===================== -->
 <script>
   document
     .getElementById("email-form")
     .addEventListener("submit", function (e) {
       let valid = true;
 
-      document.getElementById("email-error").innerText = "";
+      document.getElementById("email-error").style.display = "none";
 
       const email = document.getElementById("email").value.trim();
+      const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 
-      // Email validation regex
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
-
-      if (!emailPattern.test(email)) {
+      if (!pattern.test(email)) {
         document.getElementById("email-error").innerText =
           "Enter a valid email address.";
+        document.getElementById("email-error").style.display = "block";
         valid = false;
       }
 

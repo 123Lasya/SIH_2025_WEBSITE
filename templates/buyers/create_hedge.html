@@ -107,6 +107,16 @@
 
       <label class="hedge-label">Hedge Price</label>
       <input type="number" name="hedge_price" class="hedge-input" value="{{ predicted_price }}" required />
+<div class="info-box">
+      If hedge price > market price then Choose <strong>Put</strong> <br>
+      If hedge price < market price then Choose <strong>Call</strong>
+    </div>
+<label class="form-label">Hedge Type</label>
+    <select name="hedge_type" required class="hedge-select">
+  <option value="CALL" {% if hedge_type == 'CALL' %}selected{% endif %}>Call</option>
+  <option value="PUT" {% if hedge_type == 'PUT' %}selected{% endif %}>Put</option>
+</select>
+
 
       <!-- BUTTONS -->
       <div class="btn-group">

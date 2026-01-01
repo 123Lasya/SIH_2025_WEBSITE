@@ -1,6 +1,33 @@
 {% extends 'base.html' %} {% block content %}
-<h2>Buyer Registration Completed Successfully</h2>
-<p>Your bank details have been saved.</p>
 
-<a href="/panel/buyer/dashboard/">Go to Dashboard</a>
+<div class="container d-flex justify-content-center">
+  <div
+    class="card shadow-lg border-0 mt-5 p-5 text-center"
+    style="max-width: 550px; width: 100%; border-radius: 18px"
+  >
+    <div class="mb-3">
+      <i
+        class="bi bi-check-circle-fill"
+        style="font-size: 60px; color: #2ba37a"
+      ></i>
+    </div>
+
+    <h2 class="fw-bold mb-3" style="color: #0b2348">
+      Buyer Registration Completed Successfully
+    </h2>
+
+    <p class="text-secondary mb-4" style="font-size: 16px">
+      Your bank details have been saved.
+    </p>
+
+    <a
+      href="/panel/buyer/dashboard/"
+      class="btn btn-primary fw-semibold px-4 py-2"
+      style="background: #0b2348; border-radius: 12px; font-size: 17px"
+    >
+      Go to Dashboard
+    </a>
+  </div>
+</div>
+
 {% endblock %}

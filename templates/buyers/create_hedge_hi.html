@@ -1,0 +1,120 @@
+{% extends "buyers/buyer_base_hi.html" %}
+{% block buyer_content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .hedge-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0b2348;
+      margin-bottom: 22px;
+      font-family: "Inter", sans-serif;
+  }
+
+  .hedge-card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      max-width: 750px;
+      font-family: "Inter", sans-serif;
+  }
+
+  .hedge-label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 16px;
+      margin-bottom: 6px;
+  }
+
+  .hedge-input, .hedge-select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 15px;
+      transition: 0.25s ease;
+  }
+
+  .hedge-input:focus, .hedge-select:focus {
+      border-color: #0b2348;
+      box-shadow: 0 0 0 3px rgba(11,35,72,0.15);
+      outline: none;
+  }
+
+  .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+  }
+
+  .hedge-btn {
+      flex: 1;
+      padding: 12px 0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s ease;
+  }
+
+  .predict-btn {
+      background: #2BA37A;
+      color: white;
+  }
+
+  .predict-btn:hover {
+      background: #1f7d5d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(43,163,122,0.25);
+  }
+
+  .submit-btn {
+      background: #0b2348;
+      color: white;
+  }
+
+  .submit-btn:hover {
+      background: #132f63;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(11,35,72,0.30);
+  }
+</style>
+
+<!-- ===================== UPDATED HTML ===================== -->
+
+<h2 class="hedge-title">Create Hedge</h2>
+
+<div class="hedge-card">
+  <form method="post">
+      {% csrf_token %}
+
+      <label class="hedge-label">Crop</label>
+      <select name="crop" class="hedge-select" required>
+          <option {% if crop == "Groundnut" %}selected{% endif %}>Groundnut</option>
+          <option {% if crop == "Soybean" %}selected{% endif %}>Soybean</option>
+          <option {% if crop == "Sunflower" %}selected{% endif %}>Sunflower</option>
+      </select>
+
+      <label class="hedge-label">Quantity (kg)</label>
+      <input type="number" name="quantity" class="hedge-input" value="{{ quantity }}" required />
+
+      <label class="hedge-label">End Date</label>
+      <input type="date" name="end_date" class="hedge-input" value="{{ end_date }}" required />
+
+      <label class="hedge-label">Hedge Price</label>
+      <input type="number" name="hedge_price" class="hedge-input" value="{{ predicted_price }}" required />
+
+      <!-- BUTTONS -->
+      <div class="btn-group">
+          <button type="submit" name="ai_predict" class="hedge-btn predict-btn">AI Predict</button>
+          <button type="submit" name="submit" class="hedge-btn submit-btn">Submit Hedge</button>
+      </div>
+
+  </form>
+</div>
+
+{% endblock %}

@@ -1,128 +1,129 @@
 {% extends 'farmers/farmer_base.html' %} {% block farmer_content %}
 
-<!-- PAGE CSS -->
+<!-- ===================== IN-PAGE CSS ===================== -->
 <style>
+  :root {
+    --primary: #0b2348;
+    --primary-hover: #143766;
+    --text-secondary: #374151;
+    --border: #e5e7eb;
+    --card-shadow: rgba(0, 0, 0, 0.08);
+  }
+
+  .profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
   .profile-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #0b2348;
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--primary);
     font-family: "Inter", sans-serif;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: -0.3px;
   }
 
   .profile-card {
     background: #ffffff;
-    padding: 28px;
+    padding: 30px;
     border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-    max-width: 850px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 32px var(--card-shadow);
     font-family: "Inter", sans-serif;
-    margin-bottom: 25px;
+    margin-bottom: 28px;
+    transition: 0.25s ease;
+  }
+
+  .profile-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
   }
 
   .section-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #0b2348;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
     margin-bottom: 18px;
   }
 
   .profile-item {
     margin-bottom: 12px;
     font-size: 16px;
-    color: #374151;
+    color: var(--text-secondary);
   }
 
   .profile-item strong {
-    color: #0b2348;
+    color: var(--primary);
+  }
+
+  /* Divider line */
+  .divider {
+    height: 2px;
+    background: var(--border);
+    margin: 25px 0;
+    border-radius: 5px;
   }
 
   /* Edit button */
   .edit-btn {
-    background: #0b2348;
+    background: var(--primary);
     color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
+    padding: 14px 26px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 700;
     transition: 0.25s ease;
     text-decoration: none;
     display: inline-block;
-    margin-top: 18px;
+    box-shadow: 0 6px 20px rgba(11, 35, 72, 0.25);
   }
 
   .edit-btn:hover {
-    background: #143766;
+    background: var(--primary-hover);
     transform: translateY(-3px);
-    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
-  }
-
-  /* Divider */
-  .divider {
-    height: 2px;
-    background: #e5e7eb;
-    margin: 25px 0;
-    border-radius: 5px;
+    box-shadow: 0 10px 28px rgba(11, 35, 72, 0.35);
   }
 </style>
 
-<h2 class="profile-title">My Profile</h2>
+<!-- ===================== HTML CONTENT ===================== -->
 
-<!-- PERSONAL DETAILS CARD -->
-<div class="profile-card">
-  <h3 class="section-title">Personal Details</h3>
+<div class="profile-container">
+  <h2 class="profile-title">My Profile</h2>
 
-  <p class="profile-item">
-    <strong>Name:</strong> {{ request.user.first_name }}
-  </p>
-  <p class="profile-item"><strong>Email:</strong> {{ request.user.email }}</p>
-  <p class="profile-item">
-    <strong>Aadhaar:</strong> {{ farmer.aadhaar_number }}
-  </p>
-  <p class="profile-item"><strong>Mobile:</strong> {{ farmer.mobile }}</p>
-  <p class="profile-item">
-    <strong>Alternate Mobile:</strong> {{ farmer.alternate_mobile }}
-  </p>
+  <!-- PERSONAL DETAILS CARD -->
+  <div class="profile-card">
+    <h3 class="section-title">Personal Details</h3>
 
-  <p class="profile-item"><strong>Village:</strong> {{ farmer.village }}</p>
-  <p class="profile-item"><strong>Mandal:</strong> {{ farmer.mandal }}</p>
-  <p class="profile-item"><strong>District:</strong> {{ farmer.district }}</p>
-  <p class="profile-item">
-    <strong>Land Size (acres):</strong> {{ farmer.land_size }}
-  </p>
+    <p class="profile-item">
+      <strong>Name:</strong> {{ request.user.first_name }}
+    </p>
+    <p class="profile-item"><strong>Email:</strong> {{ request.user.email }}</p>
+    <p class="profile-item">
+      <strong>Aadhaar:</strong> {{ farmer.aadhaar_number }}
+    </p>
+    <p class="profile-item"><strong>Mobile:</strong> {{ farmer.mobile }}</p>
+    <p class="profile-item">
+      <strong>Alternate Mobile:</strong> {{ farmer.alternate_mobile }}
+    </p>
 
-  <p class="profile-item">
-    <strong>Crops Grown:</strong>
-    {% if farmer.grows_groundnut %} Groundnut {% endif %}
-    <!-- prettier-ignore -->
-    {% if farmer.grows_soybean %} | Soybean {% endif %}
-    <!-- prettier-ignore -->
-    {% if farmer.grows_sunflower %} | Sunflower {% endif %}
-  </p>
+    <div class="divider"></div>
+
+    <p class="profile-item"><strong>Village:</strong> {{ farmer.village }}</p>
+    <p class="profile-item"><strong>Mandal:</strong> {{ farmer.mandal }}</p>
+    <p class="profile-item"><strong>District:</strong> {{ farmer.district }}</p>
+    <p class="profile-item">
+      <strong>Land Size (acres):</strong> {{ farmer.land_size }}
+    </p>
+  </div>
+
+  <!-- EDIT BUTTON -->
+  <div style="text-align: center">
+    <a href="{% url 'farmer_profile_edit' %}" class="edit-btn">Edit Profile</a>
+  </div>
 </div>
-
-<!-- BANK DETAILS CARD
-<div class="profile-card">
-  <h3 class="section-title">Bank Details</h3>
-
-  {% if bank %}
-  <p class="profile-item">
-    <strong>Account Holder:</strong> {{ bank.account_holder_name }}
-  </p>
-  <p class="profile-item"><strong>Bank Name:</strong> {{ bank.bank_name }}</p>
-  <p class="profile-item">
-    <strong>Account Number:</strong> {{ bank.account_number }}
-  </p>
-  <p class="profile-item"><strong>IFSC:</strong> {{ bank.ifsc_code }}</p>
-  <p class="profile-item"><strong>UPI:</strong> {{ bank.upi_id }}</p>
-  {% else %}
-  <p class="profile-item" style="color: #6b7280">No bank details added yet.</p>
-  {% endif %}
-</div> -->
-
-<!-- EDIT BUTTON -->
-<a href="{% url 'farmer_profile_edit' %}" class="edit-btn">Edit Profile</a>
 
 {% endblock %}

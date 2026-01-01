@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  body {
+    background: #f7f9fc;
+    font-family: "Inter", sans-serif;
+  }
+
+  .help-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+  }
+
+  .help-title {
+    text-align: center;
+    font-size: 32px;
+    color: #0b2348;
+    font-weight: 800;
+    margin-bottom: 30px;
+  }
+
+  .search-box {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 16px;
+    margin-bottom: 35px;
+  }
+
+  .search-box:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(12,40,85,0.12);
+    outline: none;
+    background: #fff;
+  }
+
+  /* Collapsible Section */
+  .collapsible {
+    background: #eef2ff;
+    color: #0b2348;
+    cursor: pointer;
+    padding: 16px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-top: 20px;
+    transition: 0.3s;
+  }
+
+  .collapsible:hover {
+    background: #e0e7ff;
+  }
+
+  .collapsible.active {
+    background: #d6ddff;
+  }
+
+  .content {
+    padding: 18px 16px;
+    display: none;
+    border-radius: 10px;
+    background: #fafbff;
+    border: 1px solid #e5e7eb;
+    margin-top: 8px;
+    animation: fadeEffect 0.4s ease;
+  }
+
+  @keyframes fadeEffect {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* FAQ Item */
+  .faq-item {
+    margin-bottom: 18px;
+  }
+
+  .faq-item h4 {
+    font-size: 17px;
+    color: #0b2348;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .faq-item p {
+    font-size: 14px;
+    color: #4b5563;
+    margin-left: 4px;
+  }
+</style>
+
+<div class="help-container">
+  <h2 class="help-title">Help Center</h2>
+
+  <input
+    type="text"
+    id="search"
+    class="search-box"
+    placeholder="Search help articles… (e.g., Aadhaar, OTP, Bank Details)"
+  />
+
+  <!-- POPULAR ARTICLES COLLAPSIBLE -->
+  <button class="collapsible"> Popular Articles</button>
+  <div class="content">
+
+    <div class="faq-item">
+      <h4>How to complete Aadhaar verification?</h4>
+     <h5><li>Go to Farmer Aadhaar page</li> 
+      <li> Enter 12-digit number</li> 
+       <li>Receive OTP </li>
+       <li>Verify OTP.</li></h5>
+    </div>
+
+    <div class="faq-item">
+      <h4>How to update bank details?</h4>
+      </h5><li>Navigate to Bank Details section</li> 
+       <li>Enter correct account number, IFSC, UPI (optional) </li>
+       <li>Submit.</li></h5>
+    </div>
+
+    <div class="faq-item">
+      <h4>What is digital hedging?</h4>
+      <p>Digital hedging protects farmers from price fluctuation of oilseeds with smart contracts.</p>
+    </div>
+  </div>
+
+  <!-- SUPPORT CATEGORIES COLLAPSIBLE -->
+  <button class="collapsible"> Support Categories</button>
+  <div class="content">
+
+    <div class="faq-item">
+      <h4>Account & Login Support</h4>
+      <p>Issues with signup, OTP not received, mobile/email mismatch, password reset.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>Farmer Support</h4>
+      <p>Crop selection help, land size updates, verification process, crop preference issues.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>Buyer/Trader Support</h4>
+      <p>Company verification, GST validation help, trader category issues, capacity details.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // COLLAPSE LOGIC
+  var coll = document.getElementsByClassName("collapsible");
+  for (let i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      let content = this.nextElementSibling;
+      content.style.display =
+        content.style.display === "block" ? "none" : "block";
+    });
+  }
+
+  // SEARCH FILTER (works inside collapsibles)
+  document.getElementById("search").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    document.querySelectorAll(".faq-item").forEach(item => {
+      let text = item.innerText.toLowerCase();
+      item.style.display = text.includes(filter) ? "block" : "none";
+    });
+  });
+</script>
+
+{% endblock %}

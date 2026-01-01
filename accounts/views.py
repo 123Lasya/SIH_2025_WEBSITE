@@ -7,11 +7,13 @@ from .models import (
     FarmerProfile,
     BankDetail,
     BuyerBusinessProfile,
-    BuyerTraderProfile
-)
+    BuyerTraderProfile,
+    Wallet
+    )
 import random
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 # ---------------------------------------------------------
 # ROLE SELECT PAGE
@@ -59,8 +61,9 @@ def farmer_otp(request):
     if request.method == 'POST':
         entered = request.POST.get('otp')
         correct = request.session.get('farmer_otp')
-        
+        print("entered post")
         if entered == correct:
+            print("check")
             request.session['farmer_otp_verified'] = True
             messages.success(request, "OTP Verified Successfully.")
             return redirect('farmer_register')
@@ -78,7 +81,7 @@ def farmer_register(request):
     if request.method == 'POST':
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
-
+ 
         password = request.POST.get('password')
         confirm = request.POST.get('confirm')
 
@@ -418,3 +421,75 @@ def logout_view(request):
 def register_success(request):
     return render(request, 'accounts/register_success.html')
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from decimal import Decimal
+from accounts.models import Wallet
+
+def add_money(request):
+    wallet = request.user.wallet
+
+    if request.method == "POST":
+        amount_raw = request.POST.get("amount")
+
+        # Validate
+        try:
+            amount = Decimal(amount_raw)
+        except:
+            messages.error(request, "Enter a valid amount.")
+            return redirect("add_money")
+
+        if amount <= 0:
+            messages.error(request, "Amount must be greater than 0.")
+            return redirect("add_money")
+
+        # Add to wallet balance
+        wallet.balance += amount
+        wallet.save()
+
+        messages.success(request, f"₹{amount} added successfully!")
+        return redirect("add_money_success")
+
+    return render(request, "wallet/add_money.html", {"wallet": wallet})
+def add_money_success(request):
+    wallet = request.user.wallet
+    return render(request, "wallet/add_money_success.html", {"wallet": wallet})
+
+@login_required
+def wallet_add(request):
+    """
+    Simple Add Money page shared by Farmer & Buyer.
+    """
+    wallet = request.user.wallet
+
+    if request.method == "POST":
+        amount_raw = request.POST.get("amount")
+
+        # Validate input
+        try:
+            amount = Decimal(amount_raw)
+        except:
+            messages.error(request, "Please enter a valid amount.")
+            return redirect("wallet_add")
+
+        if amount <= 0:
+            messages.error(request, "Amount must be greater than ₹0.")
+            return redirect("wallet_add")
+
+        # Credit wallet (for hackathon: instant success)
+        wallet.balance += amount
+        wallet.save()
+
+        messages.success(request, f"₹{amount} added to your wallet successfully.")
+        return redirect("wallet_add_success")
+
+    return render(request, "accounts/wallet_add.html", {"wallet": wallet})
+
+
+@login_required
+def wallet_add_success(request):
+    """
+    Simple success screen after top-up.
+    """
+    wallet = request.user.wallet
+    return render(request, "accounts/wallet_add_success.html", {"wallet": wallet})

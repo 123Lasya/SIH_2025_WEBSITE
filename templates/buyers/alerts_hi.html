@@ -1,0 +1,92 @@
+{% extends "buyers/buyer_base_hi.html" %} {% block buyer_content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  .alerts-title {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: "Inter", sans-serif;
+    color: #0b2348;
+    margin-bottom: 22px;
+  }
+
+  .alert-card {
+    background: #ffffff;
+    padding: 18px 22px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 18px;
+    transition: 0.25s ease;
+  }
+
+  .alert-card.unread {
+    background: #e8f4ff; /* Light blue for new alerts */
+    border-color: #bcd9ff;
+  }
+
+  .alert-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+
+  .alert-message {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1f2937;
+  }
+
+  .alert-time {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 12px;
+  }
+
+  .view-btn {
+    background: #0b2348;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .view-btn:hover {
+    background: #123567;
+    box-shadow: 0 4px 12px rgba(11, 35, 72, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .no-alerts {
+    font-size: 16px;
+    color: #6b7280;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    max-width: 500px;
+  }
+</style>
+
+<!-- ===================== UPDATED HTML UI ===================== -->
+
+<h2 class="alerts-title">Alerts</h2>
+
+{% if alerts %} {% for a in alerts %}
+<div class="alert-card {% if not a.is_read %}unread{% endif %}">
+  <p class="alert-message">{{ a.message }}</p>
+  <p class="alert-time">{{ a.created_at }}</p>
+
+  {% if a.contract %}
+  <a href="{% url 'buyer_alert_view' a.id %}">
+    <button class="view-btn">View Contract</button>
+  </a>
+  {% endif %}
+</div>
+{% endfor %} {% else %}
+<p class="no-alerts">No alerts found.</p>
+{% endif %} {% endblock %}

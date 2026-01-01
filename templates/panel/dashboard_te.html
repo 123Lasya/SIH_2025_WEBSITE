@@ -1,0 +1,153 @@
+{% extends "panel/panel_base.html" %} {% block content %}
+
+<style>
+  /* ===============================
+       DASHBOARD TITLE
+    =============================== */
+  .admin-title {
+    font-size: 30px;
+    color: #0b2348;
+    font-weight: 700;
+    margin-bottom: 25px;
+    font-family: "Inter", sans-serif;
+  }
+
+  /* ===============================
+       STAT CARDS
+    =============================== */
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .stats-card {
+    flex: 1;
+    min-width: 230px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: #0b2348;
+  }
+
+  .stats-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2ba37a;
+    margin-top: 10px;
+  }
+
+  /* ===============================
+       CHART SECTIONS
+    =============================== */
+  .chart-box {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    margin-top: 35px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .chart-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 18px;
+    font-family: "Inter", sans-serif;
+  }
+</style>
+
+<h2 class="admin-title">Admin Dashboard</h2>
+
+<!-- ===============================
+     STAT CARDS
+=============================== -->
+<div class="stats-row">
+  <div class="stats-card">
+    Total Farmers
+    <div class="stats-number">{{ farmers }}</div>
+  </div>
+
+  <div class="stats-card">
+    Total Buyers
+    <div class="stats-number">{{ buyers }}</div>
+  </div>
+
+  <div class="stats-card">
+    Total Contracts
+    <div class="stats-number">{{ contracts }}</div>
+  </div>
+
+  <div class="stats-card">
+    Total Hedges
+    <div class="stats-number">{{ hedges }}</div>
+  </div>
+</div>
+
+<!-- ===============================
+     HEDGES PER MONTH CHART
+=============================== -->
+<div class="chart-box">
+  <h3 class="chart-title">Hedges Per Month</h3>
+  <canvas id="hedgeChart" height="80"></canvas>
+</div>
+
+<!-- ===============================
+     CONTRACTS PER MONTH CHART
+=============================== -->
+<div class="chart-box">
+  <h3 class="chart-title">Contracts Per Month</h3>
+  <canvas id="contractChart" height="80"></canvas>
+</div>
+
+{% endblock %} {% block extra_js %}
+<script>
+  // HEDGE BAR CHART
+  new Chart(document.getElementById("hedgeChart"), {
+      type: 'bar',
+      data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+          datasets: [{
+              label: 'Hedges',
+              data: {{ hedge_chart|safe }},
+              borderWidth: 2,
+              backgroundColor: "#0b2348",
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: { beginAtZero: true }
+          }
+      }
+  });
+
+  // CONTRACT LINE CHART
+  new Chart(document.getElementById("contractChart"), {
+      type: 'line',
+      data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+          datasets: [{
+              label: 'Contracts',
+              data: {{ contract_chart|safe }},
+              borderWidth: 3,
+              borderColor: "#2ba37a",
+              tension: 0.35
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: { beginAtZero: true }
+          }
+      }
+  });
+</script>
+{% endblock %}

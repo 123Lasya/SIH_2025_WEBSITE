@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- ===================== FARMER NAV CSS ===================== -->
+<style>
+  .farmer-nav {
+    background: #0b2348;
+    padding: 14px 24px;
+    border-radius: 12px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .farmer-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: 0.25s ease;
+  }
+
+  .farmer-nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Active link styling */
+  .farmer-active {
+    background: #2ba37a !important; /* green highlight */
+    font-weight: 600;
+  }
+
+  /* Container spacing */
+  .farmer-content-area {
+    margin-top: 25px;
+  }
+  .farmer-nav,
+  .farmer-content-area {
+    margin: 3% 10%;
+  }
+</style>
+
+<!-- ===================== FARMER NAVBAR ===================== -->
+<nav class="farmer-nav">
+  <a
+    href="{% url 'farmer_dashboard' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_dashboard' %}farmer-active{% endif %}"
+    >
+    डैशबोर्ड
+  </a>
+
+  <a
+    href="{% url 'farmer_create_contract' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_create_contract' %}farmer-active{% endif %}"
+    >
+    अनुबंध बनाएं
+  </a>
+
+  <a
+    href="{% url 'farmer_create_hedge' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_create_hedge' %}farmer-active{% endif %}"
+    >
+    हेज बनाएं
+  </a>
+
+  <a
+    href="{% url 'farmer_education' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_education' %}farmer-active{% endif %}"
+    >
+    शिक्षा
+  </a>
+
+  <a
+    href="{% url 'farmer_gov_support' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_gov_support' %}farmer-active{% endif %}"
+    >
+    सरकारी सहायता
+  </a>
+
+  <a
+    href="{% url 'farmer_alerts' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_alerts' %}farmer-active{% endif %}"
+    >
+    अलर्ट
+  </a>
+
+  <a href="{% url 'farmer_mtm_history' %}">MTM इतिहास</a>
+
+  <a
+    href="{% url 'farmer_profile' %}"
+    class="{% if request.resolver_match.url_name == 'farmer_profile' %}farmer-active{% endif %}"
+    >
+    प्रोफ़ाइल
+  </a>
+</nav>
+
+<!-- ===================== CONTENT AREA ===================== -->
+<div class="farmer-content-area">{% block farmer_content %}{% endblock %}</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% block farmer_extra_js %}{% endblock %} {% endblock %}

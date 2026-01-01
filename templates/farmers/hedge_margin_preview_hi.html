@@ -1,0 +1,114 @@
+{% extends "farmers/farmer_base_hi.html" %} {% block farmer_content %}
+
+<h2
+  style="font-family: Inter; font-size: 28px; font-weight: 800; color: #0b2348"
+>
+  मार्जिन पुष्टि
+</h2>
+
+<div
+  style="
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    max-width: 600px;
+  "
+>
+  <p><strong>फसल:</strong> {{ crop }}</p>
+  <p><strong>मात्रा:</strong> {{ quantity }} kg</p>
+  <p><strong>हेज मूल्य:</strong> ₹{{ hedge_price }}</p>
+  <p><strong>समाप्ति तिथि:</strong> {{ end_date }}</p>
+  <hr />
+
+  <p><strong>हेज मूल्य:</strong> ₹{{ hedge_value }}</p>
+  <p><strong>आवश्यक मार्जिन (10%):</strong> ₹{{ margin }}</p>
+
+  <p><strong>आपका वॉलेट बैलेंस:</strong> ₹{{ wallet.balance }}</p>
+  <p><strong>उपलब्ध बैलेंस:</strong> ₹{{ wallet.available_balance }}</p>
+
+  {% if not can_proceed %}
+  <p style="color: red; font-weight: 600">
+    अपर्याप्त शेष! जारी रखने के लिए पैसा जोड़ें।
+  </p>
+
+  <div style="display: flex; gap: 12px; margin-top: 20px">
+    <a
+      href="/wallet/add/"
+      style="
+        display: inline-block;
+        background: #2ba37a;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 700;
+        width: 50%;
+      "
+    >
+      पैसा जोड़ें
+    </a>
+
+    <a
+      href="{% url 'farmer_create_hedge' %}"
+      style="
+        display: inline-block;
+        background: #6b7280;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 700;
+        width: 50%;
+      "
+    >
+      ← वापस
+    </a>
+  </div>
+
+  {% else %}
+
+  <form method="post" action="{% url 'farmer_hedge_confirm' %}">
+    {% csrf_token %}
+
+    <button
+      style="
+        background: #0b2348;
+        color: white;
+        padding: 14px;
+        border: none;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 20px;
+      "
+    >
+      हेज़ की पुष्टि करें
+    </button>
+  </form>
+
+  <a
+    href="{% url 'farmer_create_hedge' %}"
+    style="
+      display: block;
+      margin-top: 15px;
+      background: #6b7280;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+    "
+  >
+    ← वापस
+  </a>
+
+  {% endif %}
+</div>
+
+{% endblock %}

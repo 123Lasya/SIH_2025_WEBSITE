@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+
+<h2 class="mb-3">दैनिक MTM इतिहास</h2>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>तिथि</th>
+      <th>हेज ID</th>
+      <th>प्रकार</th>
+      <th>फसल</th>
+      <th>मात्रा</th>
+      <th>हेज मूल्य</th>
+      <th>बाज़ार मूल्य</th>
+      <th>लाभ/हानि</th>
+      <th>MTM के बाद वॉलेट बैलेंस</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for row in history %}
+    <tr>
+      <td>{{ row.date }}</td>
+      <td>{{ row.hedge_id }}</td>
+      <td>{{ row.hedge_type }}</td>
+      <td>{{ row.crop }}</td>
+      <td>{{ row.quantity }}</td>
+      <td>{{ row.hedge_price }}</td>
+      <td>{{ row.market_price }}</td>
+
+      <td>
+        {% if row.pnl >= 0 %}
+        <span style="color: green">+{{ row.pnl }}</span>
+        {% else %}
+        <span style="color: red">{{ row.pnl }}</span>
+        {% endif %}
+      </td>
+
+      <td>{{ row.wallet_balance_after }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="9" class="text-center">अभी तक कोई MTM इतिहास नहीं।</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

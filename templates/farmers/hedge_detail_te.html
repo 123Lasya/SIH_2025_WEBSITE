@@ -1,0 +1,149 @@
+{% extends "farmers/farmer_base.html" %} {% block farmer_content %}
+
+<h2
+  style="
+    font-family: 'Inter';
+    font-size: 26px;
+    font-weight: 800;
+    color: #0b2348;
+  "
+>
+  హెడ్జ్ #{{ hedge.id }} — {{ hedge.crop }}
+</h2>
+
+<p style="color: #374151; font-size: 15px; margin-bottom: 20px">
+  పరిమాణం: <strong>{{ hedge.quantity }} kg</strong><br />
+  హెడ్జ్ ధర: <strong>₹{{ hedge.hedge_price }}</strong><br />
+  అవసాన తేదీ: <strong>{{ hedge.end_date }}</strong>
+</p>
+
+<!-- ⭐⭐⭐ MTM SUMMARY CARD ADDED HERE ⭐⭐⭐ -->
+{% if total_pnl is not None %}
+<div
+  style="
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    padding: 22px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-family: 'Inter';
+  "
+>
+  <h3
+    style="
+      color: #0b2348;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    "
+  >
+    MTM సారాంశం
+  </h3>
+
+  <p style="font-size: 16px; margin: 5px 0">
+    మొత్తం MTM P&amp;L:
+    <span
+      style="
+            font-weight:700;
+            {% if total_pnl >= 0 %}
+                color:#2ba37a;
+            {% else %}
+                color:#dc2626;
+            {% endif %}
+        "
+    >
+      {% if total_pnl >= 0 %}+{% endif %}₹{{ total_pnl }}
+    </span>
+  </p>
+
+  <p style="font-size: 14px; color: #6b7280; margin-top: 8px">
+    (ప్రతి రోజు ఆటోమేటిక్‌గా మీ వాలెట్‌కి సెటిల్ చేయబడుతుంది)
+  </p>
+</div>
+{% endif %}
+<!-- ⭐⭐⭐ SUMMARY CARD ENDS ⭐⭐⭐ -->
+
+<style>
+  .table-box {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 30px;
+  }
+  .mtm-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .mtm-table th {
+    background: #0b2348;
+    color: white;
+    padding: 10px;
+  }
+  .mtm-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .profit {
+    color: #2ba37a;
+    font-weight: 700;
+  }
+  .loss {
+    color: #dc2626;
+    font-weight: 700;
+  }
+</style>
+
+<div class="table-box">
+  <table class="mtm-table">
+    <tr>
+      <th>తేదీ</th>
+      <th>మార్కెట్ ధర</th>
+      <th>MTM లాభ/నష్టం</th>
+      <th>వాలెట్ తరువాత</th>
+    </tr>
+
+    {% for r in records %}
+    <tr>
+      <td>{{ r.date }}</td>
+      <td>₹{{ r.market_price }}</td>
+      <td class="{% if r.pnl >= 0 %}profit{% else %}loss{% endif %}">
+        {% if r.pnl >= 0 %}+{% endif %}₹{{ r.pnl }}
+      </td>
+      <td>₹{{ r.wallet_balance_after }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4" style="text-align: center; padding: 15px; color: #6b7280">
+        ఈ హెడ్జ్‌కు MTM చరిత్ర లేదు.
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<h3 style="font-size: 22px; font-weight: 700; color: #0b2348">MTM ధోరణి</h3>
+<canvas id="mtmChart" height="90"></canvas>
+
+{% endblock %} {% block farmer_extra_js %}
+<script>
+  const labels = {{ dates|safe }};
+  const pnlData = {{ pnl|safe }};
+
+  new Chart(document.getElementById("mtmChart"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "రోజువారీ MTM P&amp;L",
+        data: pnlData,
+        borderColor: "#0b2348",
+        backgroundColor: "rgba(11,35,72,0.2)",
+        borderWidth: 3,
+        tension: 0.3
+      }]
+    }
+  });
+</script>
+{% endblock %}

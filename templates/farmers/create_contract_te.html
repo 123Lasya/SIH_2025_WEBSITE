@@ -1,0 +1,187 @@
+{% extends "farmers/farmer_base.html" %}
+{% block farmer_content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+
+  .contract-wrapper {
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+    font-family: "Inter", sans-serif;
+  }
+
+  .contract-wrapper h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    display: block;
+    margin-top: 16px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #4b5563;
+  }
+
+  .form-input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: 0.25s ease;
+  }
+
+  .form-input:focus, select:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11,35,72,0.15);
+    outline: none;
+  }
+
+  h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0b2348;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 17px;
+    transition: 0.25s ease;
+  }
+
+  .btn-primary {
+    background: #0b2348;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #122f63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11,35,72,0.35);
+  }
+
+  .btn-secondary {
+    background: #2ba37a;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #238b65;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(43,163,122,0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+</style>
+
+<!-- ===================== HTML ===================== -->
+
+<div class="contract-wrapper">
+  <h2>ఒప్పందం సృష్టించండి</h2>
+
+  <form method="post" id="contract-form">
+    {% csrf_token %}
+
+    <label class="form-label">పంట</label>
+    <select name="crop" required class="form-input">
+        <option {% if crop == "Groundnut" %}selected{% endif %}>Groundnut</option>
+        <option {% if crop == "Soybean" %}selected{% endif %}>Soybean</option>
+        <option {% if crop == "Sunflower" %}selected{% endif %}>Sunflower</option>
+    </select>
+
+    <label class="form-label">పరిమాణం (కిలోలు)</label>
+    <input type="number" name="quantity" value="{{ quantity }}" class="form-input" required>
+    <div id="quantity-error" class="error-text"></div>
+
+    <label class="form-label">గోదాము</label>
+    <select name="warehouse" required class="form-input">
+        {% for w in warehouses %}
+        <option value="{{ w }}" {% if warehouse == w %}selected{% endif %}>{{ w }}</option>
+        {% endfor %}
+    </select>
+
+    <label class="form-label">ప్రారంభ తేదీ</label>
+    <input type="date" name="start_date" value="{{ start_date }}" class="form-input" required>
+    <div id="start-error" class="error-text"></div>
+
+    <label class="form-label">అవసాన తేదీ</label>
+    <input type="date" name="end_date" value="{{ end_date }}" class="form-input" required>
+    <div id="end-error" class="error-text"></div>
+
+    <h3>గ్రేడ్ వారీ ధరలు</h3>
+
+    <label class="form-label">గ్రేడ్ A ధర</label>
+    <input type="number" step="0.01" name="grade_a" value="{{ grade_a }}" class="form-input">
+
+    <label class="form-label">Grade B Price</label>
+    <input type="number" step="0.01" name="grade_b" value="{{ grade_b }}" class="form-input">
+
+    <label class="form-label">Grade C Price</label>
+    <input type="number" step="0.01" name="grade_c" value="{{ grade_c }}" class="form-input">
+
+    <button type="submit" name="ai_predict" class="btn-secondary">AI అంచనా</button>
+    <button type="submit" name="submit" class="btn-primary">ఒప్పందాన్ని సమర్పించండి</button>
+
+  </form>
+</div>
+
+<!-- ===================== STRICT VALIDATION JS ===================== -->
+
+<script>
+document.getElementById("contract-form").addEventListener("submit", function(e) {
+    let valid = true;
+
+    document.querySelectorAll(".error-text").forEach(el => el.innerText = "");
+
+    const qty = document.querySelector("input[name='quantity']").value.trim();
+    const start = document.querySelector("input[name='start_date']").value;
+    const end = document.querySelector("input[name='end_date']").value;
+
+    if (qty <= 0) {
+      document.getElementById("quantity-error").innerText = "పరిమాణం 0 కన్నా ఎక్కువగా ఉండాలి.";
+        valid = false;
+    }
+
+    if (start === "") {
+      document.getElementById("start-error").innerText = "దయచేసి ఒక సరైన ప్రారంభ తేదీని ఎంచుకోండి.";
+        valid = false;
+    }
+
+    if (end === "") {
+      document.getElementById("end-error").innerText = "దయచేసి ఒక సరైన ముగింపు తేదీని ఎంచుకోండి.";
+        valid = false;
+    }
+
+    if (start && end && new Date(end) < new Date(start)) {
+      document.getElementById("end-error").innerText = "ముగింపు తేదీ ప్రారంభ తేదీ తరువాత ఉండాలి.";
+        valid = false;
+    }
+
+    if (!valid) e.preventDefault();
+});
+</script>
+
+{% endblock %}

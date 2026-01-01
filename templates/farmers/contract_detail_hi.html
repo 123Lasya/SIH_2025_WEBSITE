@@ -1,0 +1,21 @@
+{% extends 'farmers/farmer_base_hi.html' %} {% block farmer_content %}
+<h2>अनुबंध विवरण – #{{ contract.id }}</h2>
+
+<p><strong>फसल:</strong> {{ contract.crop }}</p>
+<p><strong>मात्रा:</strong> {{ contract.quantity }}</p>
+<p><strong>ग्रेड A मूल्य:</strong> {{ contract.grade_a_price }}</p>
+<p><strong>ग्रेड B मूल्य:</strong> {{ contract.grade_b_price }}</p>
+<p><strong>ग्रेड C मूल्य:</strong> {{ contract.grade_c_price }}</p>
+<p><strong>गोदाम:</strong> {{ contract.warehouse }}</p>
+<p><strong>प्रारम्भ तिथि:</strong> {{ contract.start_date }}</p>
+<p><strong>समाप्ति तिथि:</strong> {{ contract.end_date }}</p>
+
+<p><strong>स्थिति:</strong> {{ contract.buyer_status }}</p>
+
+<p>
+  <strong>खरीदार:</strong>
+  {% if contract.buyer %} {{ contract.buyer.username }} {% else %} अभी तक स्वीकृत नहीं {% endif %}
+</p>
+
+<a href="{% url 'farmer_my_contracts' %}">मेरे अनुबंधों पर वापस जाएं</a>
+{% endblock %}

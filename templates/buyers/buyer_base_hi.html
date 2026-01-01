@@ -1,0 +1,100 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- ===================== BUYER NAV CSS ===================== -->
+<style>
+  .buyer-nav {
+    background: #0b2348;
+    padding: 14px 24px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-family: "Inter", sans-serif;
+  }
+
+  .buyer-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: 0.25s ease;
+  }
+
+  .buyer-nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Highlight current page */
+  .buyer-active {
+    background: #2ba37a !important;
+    font-weight: 600 !important;
+  }
+
+  .buyer-page-container {
+    padding: 35px 25px;
+  }
+
+  @media (max-width: 768px) {
+    .buyer-nav {
+      padding: 12px;
+      gap: 12px;
+    }
+  }
+</style>
+
+<!-- ===================== BUYER NAV ===================== -->
+<nav class="buyer-nav">
+  <a
+    href="{% url 'buyer_dashboard' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_dashboard' %}buyer-active{% endif %}"
+  >
+    डैशबोर्ड
+  </a>
+
+  <a
+    href="{% url 'buyer_my_hedges' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_my_hedges' %}buyer-active{% endif %}"
+  >
+    मेरी हेज़
+  </a>
+
+  <a
+    href="{% url 'buyer_my_contracts' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_my_contracts' %}buyer-active{% endif %}"
+  >
+    मेरे अनुबंध
+  </a>
+
+  <a
+    href="{% url 'buyer_contract_lookup' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_contract_lookup' %}buyer-active{% endif %}"
+  >
+    अनुबंध खोजें
+  </a>
+
+  <a
+    href="{% url 'buyer_alerts' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_alerts' %}buyer-active{% endif %}"
+  >
+    अलर्ट
+  </a>
+
+  <a
+    href="{% url 'buyer_profile' %}"
+    class="{% if request.resolver_match.url_name == 'buyer_profile' %}buyer-active{% endif %}"
+  >
+    प्रोफ़ाइल
+  </a>
+</nav>
+
+<!-- ===================== BUYER CONTENT WRAPPER ===================== -->
+<div class="buyer-page-container">{% block buyer_content %}{% endblock %}</div>
+
+<!-- CHART LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% block buyer_extra_js %}{% endblock %} {% endblock %}

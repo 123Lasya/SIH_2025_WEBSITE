@@ -1,0 +1,237 @@
+{% extends "farmers/farmer_base.html" %} {% block farmer_content %}
+
+<style>
+  .dashboard-title {
+    font-family: "Inter", sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+  }
+
+  /* SUMMARY CARDS */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    font-family: "Inter";
+  }
+
+  .summary-title {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 5px;
+  }
+
+  .summary-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0b2348;
+  }
+
+  .pnl-positive {
+    color: #2ba37a !important;
+  }
+  .pnl-negative {
+    color: #dc2626 !important;
+  }
+
+  /* Quick Actions */
+  .quick-actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .quick-btn {
+    padding: 14px 26px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  .contracts-btn {
+    background: #0b2348;
+  }
+  .contracts-btn:hover {
+    background: #122e61;
+    transform: translateY(-2px);
+  }
+
+  .hedges-btn {
+    background: #2ba37a;
+  }
+  .hedges-btn:hover {
+    background: #238b65;
+    transform: translateY(-2px);
+  }
+
+  /* Cards */
+  .dashboard-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    margin-bottom: 28px;
+  }
+
+  /* Crop Buttons */
+  .crop-btn {
+    padding: 10px 22px;
+    background: #0b2348;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: 0.25s ease;
+  }
+
+  .crop-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(11, 35, 72, 0.28);
+  }
+
+  /* Alerts */
+  .alerts-box {
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    margin-top: 30px;
+  }
+
+  .alert-item {
+    padding: 14px;
+    margin-bottom: 10px;
+    background: #f7f9fc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #0b2348;
+  }
+</style>
+
+<h2 class="dashboard-title">ఫార్మర్ డ్యాష్‌బోర్డు</h2>
+
+<!-- ===================== MTM SUMMARY CARDS ===================== -->
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="summary-title">ఈ రోజు MTM P&amp;L</div>
+    <div
+      class="summary-value {% if today_pnl >= 0 %}pnl-positive{% else %}pnl-negative{% endif %}"
+    >
+      {% if today_pnl >= 0 %}+{% endif %}₹{{ today_pnl }}
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-title">మొత్తం P&amp;L</div>
+    <div
+      class="summary-value {% if total_pnl >= 0 %}pnl-positive{% else %}pnl-negative{% endif %}"
+    >
+      {% if total_pnl >= 0 %}+{% endif %}₹{{ total_pnl }}
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-title">ఓపెన్ హెడ్జ్‌లు</div>
+    <div class="summary-value">{{ open_hedges }}</div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-title">వాలెట్ అందుబాటులో బ్యాలెన్స్</div>
+    <div class="summary-value">₹{{ available }}</div>
+  </div>
+</div>
+
+<!-- QUICK ACTION BUTTONS -->
+<div class="quick-actions">
+  <a href="{% url 'farmer_my_contracts' %}" class="quick-btn contracts-btn">నా ఒప్పందాలు</a>
+  <a href="{% url 'farmer_my_hedges' %}" class="quick-btn hedges-btn">నా హెడ్జ్లు</a>
+</div>
+
+<!-- CROP SELECTOR -->
+<div class="dashboard-card">
+  <h3>పంటను ఎంచుకోండి</h3>
+  <button onclick="loadCrop('Groundnut')" class="crop-btn">వేరుశనగ</button>
+  <button onclick="loadCrop('Soybean')" class="crop-btn">సోయాబీన్</button>
+  <button onclick="loadCrop('Sunflower')" class="crop-btn">సన్‌ఫ్లవర్</button>
+</div>
+
+<!-- TODAY'S PRICE -->
+<div class="dashboard-card">
+  <h3>ఈ రోజువారీ మార్కెట్ ధర</h3>
+  <p style="font-size: 22px; font-weight: 700; color: #2ba37a">
+    <span id="todayPrice">లోడ్ అవుతోంది...</span>
+  </p>
+</div>
+
+<!-- FORECAST CHART -->
+<div class="dashboard-card">
+  <h3>7-రోజుల AI ధర అంచనా</h3>
+  <canvas id="forecastChart" style="width: 100%; max-width: 900px"></canvas>
+</div>
+
+<!-- ALERTS -->
+<div class="alerts-box">
+  <h3>తాజా తెలుపింపులు</h3>
+  {% if alerts %} {% for a in alerts %}
+  <div class="alert-item">{{ a.message }}</div>
+  {% endfor %} {% else %}
+  <p>ఇంకా అలర్ట్లు లేవు.</p>
+  {% endif %}
+</div>
+
+{% endblock %} {% block farmer_extra_js %}
+<script>
+  let chartInstance = null;
+
+  function loadCrop(cropName) {
+    fetch(`/farmer/forecast-api/?crop=${cropName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        document.getElementById("todayPrice").innerText = "₹ " + data.prices[0];
+
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(document.getElementById("forecastChart"), {
+          type: "line",
+          data: {
+            labels: data.dates,
+            datasets: [
+              {
+                label: `${cropName} Price (₹)`,
+                data: data.prices,
+                borderColor: "#0b2348",
+                backgroundColor: "rgba(11,35,72,0.15)",
+                borderWidth: 2,
+                tension: 0.4,
+              },
+            ],
+          },
+        });
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => loadCrop("Groundnut"));
+</script>
+{% endblock %}

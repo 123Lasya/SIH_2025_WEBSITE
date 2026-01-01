@@ -1,0 +1,105 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+  .contact-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  .contact-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 12px;
+  }
+
+  .contact-subtitle {
+    font-size: 16px;
+    color: #4b5563;
+    max-width: 650px;
+    margin-bottom: 40px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+
+  .contact-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
+  }
+
+  .contact-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 10px;
+  }
+
+  .contact-card p {
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  .contact-highlight {
+    color: #2ba37a;
+    font-weight: 700;
+  }
+</style>
+
+<div class="contact-wrapper">
+  <h2 class="contact-title">Contact Us</h2>
+
+  <p class="contact-subtitle">
+    For assistance related to farmer contracts, digital hedging, price
+    forecasts, or dashboard issues, please reach out through the official
+    support channels below.
+  </p>
+
+  <div class="contact-grid">
+    <!-- Email Card -->
+    <div class="contact-card">
+      <h4>Support Email</h4>
+      <p class="contact-highlight">support@krushikisan.gov.in</p>
+      <p>
+        Reach out to us via email for detailed queries and documentation-related
+        support.
+      </p>
+    </div>
+
+    <!-- Helpline Card -->
+    <div class="contact-card">
+      <h4>Helpline</h4>
+      <p class="contact-highlight">1800-123-4455</p>
+      <p>
+        Available Monday to Friday<br />
+        <strong>9:00 AM - 6:00 PM</strong>
+      </p>
+    </div>
+
+    <!-- Address Card -->
+    <div class="contact-card">
+      <h4>Office Address</h4>
+      <p>
+        Krushi Kisan Suraksha Office,<br />
+        Ministry of Agriculture & Farmers Welfare,<br />
+        New Delhi, India
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

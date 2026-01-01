@@ -1,52 +1,220 @@
-{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+{% extends 'farmers/farmer_base.html' %}
+{% block farmer_content %}
 
-<h2>Contract #{{ contract.id }}</h2>
+<style>
+  :root {
+    --primary: #0b2348;
+    --primary-dark: #0a1f3d;
+    --border: #e5e7eb;
+    --muted: #6b7280;
+    --light-bg: #f3f6fb;
+    --card-bg: #ffffff;
+    --shadow: 0 10px 28px rgba(0,0,0,0.08);
+  }
 
-<div style="border: 1px solid #ccc; padding: 20px">
-  <p><strong>Farmer:</strong> {{ contract.farmer.full_name }}</p>
-  <p><strong>Crop:</strong> {{ contract.crop }}</p>
-  <p><strong>Quantity:</strong> {{ contract.quantity }} kg</p>
+  .hedge-wrapper {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 36px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    font-family: "Inter", sans-serif;
+    animation: fadeIn 0.6s ease-out;
+  }
 
-  <p><strong>Grade A:</strong> ₹{{ contract.grade_a_price }}</p>
-  <p><strong>Grade B:</strong> ₹{{ contract.grade_b_price }}</p>
-  <p><strong>Grade C:</strong> ₹{{ contract.grade_c_price }}</p>
+  .hedge-wrapper h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+  }
 
-  <p><strong>Warehouse:</strong> {{ contract.warehouse }}</p>
-  <p><strong>Start:</strong> {{ contract.start_date }}</p>
-  <p><strong>End:</strong> {{ contract.end_date }}</p>
+  /* TWO GRIDS SIDE BY SIDE */
+  .grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
 
-  <hr />
+  .form-label {
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--primary);
+    display: block;
+  }
 
-  <form method="post">
+  .form-input, select {
+    width: 100%;
+    padding: 13px 15px;
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    background: #ffffff;
+    transition: 0.25s ease;
+  }
+
+  .form-input:focus, select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11,35,72,0.18);
+    outline: none;
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--light-bg);
+    border-left: 5px solid var(--primary);
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-top: 14px;
+    color: var(--primary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* BUTTON */
+  .btn-primary {
+    width: 100%;
+    padding: 15px;
+    margin-top: 28px;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    border: none;
+    font-size: 17px;
+    transition: 0.3s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(11,35,72,0.28);
+  }
+
+  .error-text {
+    color: #b91c1c;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  #ai-info {
+    font-size: 13px;
+    margin-top: 7px;
+    color: var(--primary);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="hedge-wrapper">
+  <h2>Create Option Trading</h2>
+
+  <form method="post" id="hedge-form">
     {% csrf_token %}
 
-    <button
-      name="action"
-      value="ACCEPT"
-      style="
-        background: green;
-        padding: 10px 20px;
-        color: white;
-        border-radius: 8px;
-      "
-    >
-      Accept
-    </button>
+    <!-- ⭐ FIRST ROW: CROP + QUANTITY -->
+    <div class="grid-row">
+      <div>
+        <label class="form-label">Crop</label>
+        <select name="crop" required class="form-input" onchange="autoPredictPrice()">
+          <option {% if crop == 'Groundnut' %}selected{% endif %}>Groundnut</option>
+          <option {% if crop == 'Soybean' %}selected{% endif %}>Soybean</option>
+          <option {% if crop == 'Sunflower' %}selected{% endif %}>Sunflower</option>
+        </select>
+      </div>
 
-    <button
-      name="action"
-      value="REJECT"
-      style="
-        background: red;
-        padding: 10px 20px;
-        margin-left: 10px;
-        color: white;
-        border-radius: 8px;
-      "
-    >
-      Reject
-    </button>
+      <div>
+        <label class="form-label">Quantity (quintals)</label>
+        <input type="number" name="quantity" class="form-input" value="{{ quantity }}" required>
+        <div id="qty-error" class="error-text"></div>
+      </div>
+    </div>
+
+    <!-- End Date -->
+    <label class="form-label">End Date</label>
+    <input type="date" name="end_date" class="form-input" value="{{ end_date }}" required onchange="autoPredictPrice()">
+    <div id="date-error" class="error-text"></div>
+
+    <!-- Price -->
+    <label class="form-label">Option Price</label>
+    <input type="number" name="hedge_price" class="form-input" required value="{{ predicted_price }}">
+    
+    <div class="info-box">
+      <strong>Guidance for Option Trading:</strong><br>
+      • If option price is <b>greater</b> than market → Select <b>Put</b><br>
+      • If option price is <b>less</b> than market → Select <b>Call</b>
+    </div>
+
+    <p id="ai-info"></p>
+    <div id="price-error" class="error-text"></div>
+
+    <!-- Hedge Type -->
+    <label class="form-label">Option Type</label>
+    <select name="hergetype" required class="form-input">
+      <option {% if opt == 'Call' %}selected{% endif %}>Call</option>
+      <option {% if opt == 'Put' %}selected{% endif %}>Put</option>
+    </select>
+
+    <!-- Submit -->
+    <button type="submit" name="submit" class="btn-primary">Proceed to Margin</button>
   </form>
 </div>
+
+<script>
+document.getElementById("hedge-form").addEventListener("submit", function(e) {
+  let valid = true;
+
+  document.querySelectorAll(".error-text").forEach(el => el.innerText = "");
+
+  const qty = document.querySelector("input[name='quantity']").value.trim();
+  const endDate = document.querySelector("input[name='end_date']").value;
+  const price = document.querySelector("input[name='hedge_price']").value.trim();
+
+  if (qty <= 0) {
+    document.getElementById("qty-error").innerText = "Quantity must be greater than 0.";
+    valid = false;
+  }
+
+  if (!endDate) {
+    document.getElementById("date-error").innerText = "Please select an end date.";
+    valid = false;
+  }
+
+  if (price <= 0) {
+    document.getElementById("price-error").innerText = "Please enter a valid option price.";
+    valid = false;
+  }
+
+  if (!valid) e.preventDefault();
+});
+
+function autoPredictPrice() {
+    const crop = document.querySelector("[name='crop']").value;
+    const endDate = document.querySelector("[name='end_date']").value;
+
+    if (!crop || !endDate) return;
+
+    fetch(`/farmer/ajax/predict-price/?crop=${crop}&end_date=${endDate}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.predicted_price) {
+                document.querySelector("[name='hedge_price']").value = data.predicted_price;
+                document.getElementById("ai-info").innerText =
+                    "AI predicted price applied (you may adjust).";
+            }
+        });
+}
+</script>
 
 {% endblock %}

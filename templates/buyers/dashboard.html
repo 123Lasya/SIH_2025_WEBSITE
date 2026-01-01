@@ -1,152 +1,232 @@
 {% extends "buyers/buyer_base.html" %}
 {% block buyer_content %}
 
-<!-- ===================== PAGE CSS ===================== -->
+<!-- ===================== IN-PAGE CSS ===================== -->
 <style>
-  .page-title {
-    font-size: 30px;
-    font-weight: 700;
-    color: #0b2348;
-    font-family: "Inter", sans-serif;
-    margin-bottom: 25px;
+  :root {
+    --primary: #0b2348;
+    --primary-hover: #133460;
+    --text-secondary: #4b5563;
+    --border: #e5e7eb;
+    --card-shadow: rgba(0, 0, 0, 0.08);
   }
 
+  .container-center {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--primary);
+    font-family: "Inter", sans-serif;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  /* SUMMARY CARDS GRID */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+    margin-bottom: 32px;
+  }
+
+  .summary-card {
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 26px var(--card-shadow);
+    transition: 0.25s ease;
+  }
+
+  .summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(0,0,0,0.12);
+  }
+
+  .summary-title {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .summary-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .pnl-positive { color: #1fa567 !important; }
+  .pnl-negative { color: #dc2626 !important; }
+
+  /* QUICK ACTION BUTTONS */
   .quick-btns {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
   }
 
   .quick-btn {
     padding: 14px 26px;
-    background: #0b2348;
+    background: var(--primary);
     color: white;
-    border-radius: 8px;
+    border-radius: 12px;
+    font-size: 17px;
     font-weight: 600;
-    font-size: 15px;
     text-decoration: none;
     transition: 0.25s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   }
 
   .quick-btn:hover {
-    background: #16386a;
+    background: var(--primary-hover);
     transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.20);
   }
 
-  .quick-btn.green {
-    background: #2ba37a;
-  }
-
-  .quick-btn.green:hover {
-    background: #248b68;
-  }
-
+  /* Crop Selector Box */
   .crop-select-box {
     background: white;
-    padding: 18px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-    max-width: 400px;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 22px var(--card-shadow);
+    max-width: 420px;
     margin-bottom: 30px;
   }
 
+  /* Snapshot Card */
   .snapshot-card {
-    background: #ffffff;
-    padding: 26px;
-    border-radius: 14px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 32px var(--card-shadow);
     max-width: 900px;
   }
 
   .snapshot-card h3 {
-    margin-bottom: 12px;
-    color: #0b2348;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
   }
 
   .snapshot-card p {
-    font-size: 16px;
-    margin-bottom: 14px;
-    color: #374151;
-  }
-
-  .snapshot-card h4 {
-    margin-top: 20px;
-    color: #0b2348;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-secondary);
   }
 </style>
 
-<!-- ===================== TITLE ===================== -->
-<h2 class="page-title">Buyer Dashboard</h2>
+<!-- ===================== DASHBOARD LAYOUT ===================== -->
+<div class="container-center">
 
-<!-- ===================== QUICK ACTION BUTTONS ===================== -->
-<div class="quick-btns">
-  <a href="{% url 'buyer_create_hedge' %}" class="quick-btn">Create Hedge</a>
-  <a href="{% url 'buyer_contract_lookup' %}" class="quick-btn green">Browse Contracts</a>
-</div>
+  <h2 class="page-title">Buyer Dashboard</h2>
 
-<!-- ===================== CROP DROPDOWN ===================== -->
-<div class="crop-select-box">
-  <form method="get">
-    <label><strong>Select Crop:</strong></label>
-    <select name="crop" onchange="this.form.submit()" style="
-      width:100%;
-      margin-top:8px;
-      padding:10px;
-      border-radius:8px;
-      border:1px solid #cbd5e1;
-      font-size:15px;">
-      
-      <option value="Groundnut" {% if crop == 'Groundnut' %}selected{% endif %}>Groundnut</option>
-      <option value="Soybean" {% if crop == 'Soybean' %}selected{% endif %}>Soybean</option>
-      <option value="Sunflower" {% if crop == 'Sunflower' %}selected{% endif %}>Sunflower</option>
-    </select>
-  </form>
-</div>
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
 
-<!-- ===================== MARKET SNAPSHOT CARD ===================== -->
-<div class="snapshot-card">
+    <div class="summary-card">
+      <div class="summary-title">Today's MTM P&L</div>
+      <div class="summary-value {% if today_pnl >= 0 %}pnl-positive{% else %}pnl-negative{% endif %}">
+        {% if today_pnl >= 0 %}+{% endif %}₹{{ today_pnl }}
+      </div>
+    </div>
 
-  <h3>Market Snapshot – {{ crop }}</h3>
+    <div class="summary-card">
+      <div class="summary-title">Total P&L</div>
+      <div class="summary-value {% if total_pnl >= 0 %}pnl-positive{% else %}pnl-negative{% endif %}">
+        {% if total_pnl >= 0 %}+{% endif %}₹{{ total_pnl }}
+      </div>
+    </div>
 
-  <p><strong>Today's Price:</strong> ₹{{ forecast.0 }} </p>
+    <div class="summary-card">
+      <div class="summary-title">Open Hedges</div>
+      <div class="summary-value">{{ open_hedges }}</div>
+    </div>
 
-  <h4>7-Day AI Forecast</h4>
-  <canvas id="forecastChart" height="80"></canvas>
+    <div class="summary-card">
+      <div class="summary-title">Wallet Balance</div>
+      <div class="summary-value">₹{{ available }}</div>
+    </div>
+
+  </div> 
+
+  <!-- QUICK ACTION BUTTONS -->
+  <div class="quick-btns">
+    <!-- <a href="{% url 'buyer_create_hedge' %}" class="quick-btn">Create Option Trading</a> -->
+    <a href="{% url 'buyer_contract_lookup' %}" class="quick-btn">Browse Forward Contracts</a>
+  </div>
+
+  <!-- CROP SELECTOR -->
+  <div class="crop-select-box">
+    <label style="color:var(--primary); font-weight:700;">Select Crop</label>
+
+    <form method="get">
+      <select name="crop" onchange="this.form.submit()"
+        style="width:100%; margin-top:10px; padding:12px; border-radius:12px; border:1px solid #cbd5e1; font-size:15px;">
+        
+        <option value="Groundnut" {% if crop == 'Groundnut' %}selected{% endif %}>Groundnut</option>
+        <option value="Soybean" {% if crop == 'Soybean' %}selected{% endif %}>Soybean</option>
+        <option value="Sunflower" {% if crop == 'Sunflower' %}selected{% endif %}>Sunflower</option>
+      </select>
+    </form>
+  </div>
+
+  <!-- SNAPSHOT CARD WITH GRAPH -->
+  <div class="snapshot-card">
+    <h3>Market Snapshot – {{ crop }}</h3>
+
+    <p><strong>Today's Price:</strong> ₹{{ forecast.0 }}</p>
+
+    <h4 style="margin-top:20px; color:var(--primary); font-size:20px; font-weight:700;">7-Day AI Forecast</h4>
+
+    <canvas id="forecastChart" style="margin-top:12px;"></canvas>
+  </div>
 
 </div>
 
 {% endblock %}
 
-<!-- ===================== JS: CHART RENDER ===================== -->
 {% block buyer_extra_js %}
 <script>
-    const forecastData = {{ forecast_js|safe }};
+  const forecastData = {{ forecast_js|safe }};
 
-    new Chart(document.getElementById('forecastChart'), {
-        type: 'line',
-        data: {
-            labels: ['Day 1','Day 2','Day 3','Day 4','Day 5','Day 6','Day 7'],
-            datasets: [{
-                label: 'Price Forecast (₹)',
-                data: forecastData,
-                borderWidth: 3,
-                tension: 0.35,
-                borderColor: '#0b2348',
-                backgroundColor: 'rgba(11,35,72,0.12)',
-                pointRadius: 4,
-                pointBackgroundColor: '#0b2348'
-            }]
+  new Chart(document.getElementById('forecastChart'), {
+    type: 'line',
+    data: {
+      labels: ['Day 1','Day 2','Day 3','Day 4','Day 5','Day 6','Day 7'],
+      datasets: [{
+        label: 'Price Forecast (₹)',
+        data: forecastData,
+        borderColor: '#0b2348',
+        backgroundColor: 'rgba(11,35,72,0.10)',
+        borderWidth: 3,
+        tension: 0.42,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#0b2348'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          grid: { color: "#e5e7eb" },
         },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: false }
-            }
+        x: {
+          grid: { display: false },
         }
-    });
+      }
+    }
+  });
 </script>
 {% endblock %}

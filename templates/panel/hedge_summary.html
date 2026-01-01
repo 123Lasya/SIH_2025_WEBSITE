@@ -1,0 +1,73 @@
+{% extends "panel/panel_base.html" %} {% block content %}
+
+<h2 class="admin-title">Hedging Summary — PUT (Farmers) & CALL (Buyers)</h2>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-family: "Inter", sans-serif;
+  }
+
+  th,
+  td {
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #0b2348;
+  }
+
+  .put-head {
+    background: #dbeafe !important;
+  }
+
+  .call-head {
+    background: #dcfce7 !important;
+  }
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th class="put-head" colspan="4">PUT — Farmer Hedges</th>
+      <th class="call-head" colspan="3">CALL — Buyer Hedges</th>
+    </tr>
+
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Hedge Amount</th>
+      <th>Market Price</th>
+
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Hedge Amount</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for f, b in combined %}
+    <tr>
+      <!-- PUT SIDE (Farmer) -->
+      <td>{% if f %}{{ f.farmer }}{% endif %}</td>
+      <td>{% if f %}{{ f.quantity }}{% endif %}</td>
+      <td>{% if f %}{{ f.hedge_amount }}{% endif %}</td>
+      <td>{% if f %}{{ f.market_price }}{% endif %}</td>
+
+      <!-- CALL SIDE (Buyer) -->
+      <td>{% if b %}{{ b.buyer }}{% endif %}</td>
+      <td>{% if b %}{{ b.quantity }}{% endif %}</td>
+      <td>{% if b %}{{ b.hedge_amount }}{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% for i in count %}
+<p>Put User-{{i}} setteled</p>
+{% endfor %} {% endblock %}

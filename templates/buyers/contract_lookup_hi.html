@@ -1,0 +1,109 @@
+{% extends "buyers/buyer_base.html" %} {% block buyer_content %}
+
+<style>
+  .district-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0b2348;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 22px;
+  }
+
+  .contract-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 900px;
+  }
+
+  .contract-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: 0.25s ease;
+    font-family: "Inter", sans-serif;
+  }
+
+  .contract-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
+  }
+
+  .contract-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 10px;
+  }
+
+  .info-row {
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .view-btn {
+    background: #0b2348;
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+    text-decoration: none;
+  }
+
+  .view-btn:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+  }
+
+  .no-contracts {
+    margin-top: 16px;
+    font-size: 16px;
+    color: #6b7280;
+  }
+</style>
+
+<h2 class="district-title">Contracts</h2>
+
+{% if contracts %}
+<div class="contract-list">
+  {% for c in contracts %}
+  <div class="contract-card">
+    <div class="contract-title">{{ c.crop }} — {{ c.quantity }} kg</div>
+
+    <p class="info-row">
+      <span class="info-label">Farmer:</span> {{ c.farmer.full_name }}
+    </p>
+
+    <p class="info-row">
+      <span class="info-label">Village:</span> {{ c.farmer.village }}
+    </p>
+
+    <p class="info-row">
+      <span class="info-label">Warehouse:</span> {{ c.warehouse }}
+    </p>
+
+    <p class="info-row">
+      <span class="info-label">Period:</span>
+      {{ c.start_date }} → {{ c.end_date }}
+    </p>
+
+    <a href="{% url 'buyer_contract_detail' c.id %}" class="view-btn">
+      View Contract
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="no-contracts">No contracts available in your district.</p>
+{% endif %} {% endblock %}

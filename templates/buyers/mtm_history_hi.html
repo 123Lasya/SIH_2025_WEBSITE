@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">📊 Buyer MTM History</h2>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Hedge ID</th>
+        <th>Crop</th>
+        <th>Quantity</th>
+        <th>Hedge Price</th>
+        <th>Market Price</th>
+        <th>PnL</th>
+        <th>Wallet After MTM</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in history %}
+      <tr>
+        <td>{{ m.date }}</td>
+        <td>{{ m.hedge_id }}</td>
+        <td>{{ m.crop }}</td>
+        <td>{{ m.quantity }}</td>
+        <td>{{ m.hedge_price }}</td>
+        <td>{{ m.market_price }}</td>
+        <td>
+          {% if m.pnl >= 0 %}
+          <span style="color: green">+{{ m.pnl }}</span>
+          {% else %}
+          <span style="color: red">{{ m.pnl }}</span>
+          {% endif %}
+        </td>
+        <td>{{ m.wallet_balance_after }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8" class="text-center">No MTM history yet</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

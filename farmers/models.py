@@ -18,6 +18,16 @@ class FarmerHedge(models.Model):
     end_date = models.DateField() 
     # blockchain field
     hedge_hash = models.CharField(max_length=200, blank=True, null=True)
+    margin_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    matched_quantity = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    status = models.CharField(max_length=20, default="OPEN")  
+    last_mtm_pnl = models.DecimalField(max_digits=14, decimal_places=2, default=0)
+    HEDGE_TYPES = [
+    ("CALL", "Call"),
+    ("PUT", "Put"),
+    ]
+
+    hedge_type = models.CharField(max_length=10, choices=HEDGE_TYPES, default="CALL")
 
     created_at = models.DateTimeField(auto_now_add=True)
 

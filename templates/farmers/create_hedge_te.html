@@ -1,0 +1,163 @@
+{% extends 'farmers/farmer_base.html' %}
+{% block farmer_content %}
+
+<style>
+  .hedge-wrapper {
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+    font-family: "Inter", sans-serif;
+  }
+
+  .hedge-wrapper h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    display: block;
+    margin-top: 16px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #4b5563;
+  }
+
+  .form-input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: 0.25s ease;
+  }
+
+  .form-input:focus, select:focus {
+    border-color: #0b2348;
+    box-shadow: 0 0 0 3px rgba(11,35,72,0.15);
+    outline: none;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: #0b2348;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 17px;
+    transition: 0.25s ease;
+  }
+
+  .btn-primary:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11,35,72,0.35);
+  }
+
+  .error-text {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  #ai-info {
+    font-size: 13px;
+    color: #0b2348;
+    margin-top: 4px;
+  }
+</style>
+
+<div class="hedge-wrapper">
+  <h2>హెడ్జ్ సృష్టించండి</h2>
+
+  <form method="post" id="hedge-form">
+    {% csrf_token %}
+
+    <!-- Crop -->
+    <label class="form-label">పంట</label>
+    <select name="crop" required class="form-input" onchange="autoPredictPrice()">
+      <option {% if crop == 'Groundnut' %}selected{% endif %}>Groundnut</option>
+      <option {% if crop == 'Soybean' %}selected{% endif %}>Soybean</option>
+      <option {% if crop == 'Sunflower' %}selected{% endif %}>Sunflower</option>
+    </select>
+
+    <!-- Quantity -->
+    <label class="form-label">పరిమాణం (కిలోలు)</label>
+    <input type="number" name="quantity" class="form-input" value="{{ quantity }}" required>
+    <div id="qty-error" class="error-text"></div>
+
+    <!-- End Date -->
+    <label class="form-label">అంతిమ తేదీ</label>
+    <input type="date" name="end_date" class="form-input" value="{{ end_date }}" required onchange="autoPredictPrice()">
+    <div id="date-error" class="error-text"></div>
+
+    <!-- Hedge Price -->
+    <label class="form-label">హెడ్జ్ ధర</label>
+    <input type="number" name="hedge_price" class="form-input" required value="{{ predicted_price }}">
+    <p id="ai-info"></p>
+    <div id="price-error" class="error-text"></div>
+
+    <!-- Submit -->
+    <button type="submit" name="submit" class="btn-primary">మార్జిన్ కోసం కొనసాగించండి</button>
+
+  </form>
+</div>
+
+<script>
+document.getElementById("hedge-form").addEventListener("submit", function(e) {
+  let valid = true;
+
+  document.querySelectorAll(".error-text").forEach(el => el.innerText = "");
+
+  const qty = document.querySelector("input[name='quantity']").value.trim();
+  const endDate = document.querySelector("input[name='end_date']").value;
+  const price = document.querySelector("input[name='hedge_price']").value.trim();
+
+    if (qty <= 0) {
+    document.getElementById("qty-error").innerText = "పరిమాణం 0 కంటే ఎక్కువగా ఉండాలి.";
+    valid = false;
+  }
+
+    if (endDate === "") {
+    document.getElementById("date-error").innerText = "దయచేసి చివరి తేదీని ఎంచుకోండి.";
+    valid = false;
+  }
+
+    if (price <= 0) {
+    document.getElementById("price-error").innerText = "దయచేసి సరైన హెడ్జ్ ధర నమోదు చేయండి.";
+    valid = false;
+  }
+
+  if (!valid) e.preventDefault();
+});
+
+function autoPredictPrice() {
+    const crop = document.querySelector("[name='crop']").value;
+    const endDate = document.querySelector("[name='end_date']").value;
+
+    if (!crop || !endDate) return;
+
+    fetch(`/farmer/ajax/predict-price/?crop=${crop}&end_date=${endDate}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.predicted_price) {
+                document.querySelector("[name='hedge_price']").value = data.predicted_price;
+                document.getElementById("ai-info").innerText =
+                  "ఎంచుకున్న తేదీకి AI అంచనా ధర (అవసరమైతే మీరు మార్చుకోవచ్చు).";
+            }
+        });
+}
+</script>
+
+{% endblock %}

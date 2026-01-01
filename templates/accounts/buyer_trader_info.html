@@ -1,257 +1,274 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- ===================== IN-PAGE CSS ===================== -->
 <style>
   .trader-wrapper {
-    max-width: 550px;
-    margin: 50px auto;
-    padding: 32px;
+    max-width: 780px;
+    margin: 60px auto;
+    padding: 35px;
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 20px;
     border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
     font-family: "Inter", sans-serif;
+    animation: fadeIn 0.6s ease-out;
   }
 
-  .trader-wrapper h2 {
+  .trader-title {
     text-align: center;
     color: #0b2348;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     margin-bottom: 20px;
   }
 
-  .trader-label {
-    font-weight: 600;
-    color: #4b5563;
-    display: block;
-    margin-bottom: 6px;
-    margin-top: 12px;
+  .trader-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 30px;
   }
 
-  .trader-input,
-  .trader-select {
+  @media (max-width: 768px) {
+    .trader-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .label {
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 6px;
+  }
+
+  .input-box,
+  .select-box {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
     font-size: 15px;
     transition: 0.25s ease;
   }
 
-  .trader-input:focus,
-  .trader-select:focus {
+  .input-box:focus,
+  .select-box:focus {
     border-color: #0b2348;
-    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.18);
     outline: none;
   }
 
-  .crop-checkbox {
-    margin: 5px 0;
-    font-weight: 500;
-    color: #4b5563;
+  .error-msg {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 3px;
+    font-weight: 600;
   }
 
-  .continue-btn {
+  .crop-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: -8px;
+  }
+
+  .submit-btn {
     width: 100%;
     background: #0b2348;
-    color: #ffffff;
-    padding: 14px 0;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
     border: none;
-    border-radius: 10px;
-    margin-top: 22px;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
-    cursor: pointer;
+    margin-top: 20px;
     transition: 0.25s ease;
   }
 
-  .continue-btn:hover {
+  .submit-btn:hover {
     background: #132f63;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+    box-shadow: 0 8px 20px rgba(11, 35, 72, 0.3);
   }
 
-  .error-text {
-    color: #dc2626;
-    font-size: 14px;
-    margin-top: 4px;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
-<!-- ===================== HTML ===================== -->
-
 <div class="trader-wrapper">
-  <h2>Trader Buyer Registration</h2>
+  <h2 class="trader-title">
+    <i class="bi bi-person-lines-fill me-2"></i>
+    Trader Buyer Registration
+  </h2>
 
   <form method="post" id="trader-form">
     {% csrf_token %}
 
-    <label class="trader-label">Full Name</label>
-    <input
-      type="text"
-      name="full_name"
-      class="trader-input"
-      id="full_name"
-      required
-    />
-    <div id="name-error" class="error-text"></div>
+    <div class="trader-grid">
+      <!-- FULL NAME -->
+      <div>
+        <label class="label">Full Name</label>
+        <input
+          type="text"
+          name="full_name"
+          id="full_name"
+          class="input-box"
+          required
+        />
+        <div id="name-error" class="error-msg"></div>
+      </div>
 
-    <label class="trader-label">Password</label>
-    <input
-      type="password"
-      name="password"
-      class="trader-input"
-      id="password"
-      required
-    />
-    <div id="password-error" class="error-text"></div>
+      <!-- PASSWORD -->
+      <div>
+        <label class="label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="input-box"
+          required
+        />
+        <div id="password-error" class="error-msg"></div>
+      </div>
 
-    <label class="trader-label">Confirm Password</label>
-    <input
-      type="password"
-      name="confirm"
-      class="trader-input"
-      id="confirm"
-      required
-    />
-    <div id="confirm-error" class="error-text"></div>
+      <!-- CONFIRM PASSWORD -->
+      <div>
+        <label class="label">Confirm Password</label>
+        <input
+          type="password"
+          name="confirm"
+          id="confirm"
+          class="input-box"
+          required
+        />
+        <div id="confirm-error" class="error-msg"></div>
+      </div>
 
-    <label class="trader-label">Trader Type</label>
-    <select name="trader_type" class="trader-select" id="trader_type" required>
-      <option>APMC Trader</option>
-      <option>Local Mandi Trader</option>
-      <option>Wholesaler</option>
-    </select>
+      <!-- TRADER TYPE -->
+      <div>
+        <label class="label">Trader Type</label>
+        <select name="trader_type" id="trader_type" class="select-box" required>
+          <option>APMC Trader</option>
+          <option>Local Mandi Trader</option>
+          <option>Wholesaler</option>
+        </select>
+      </div>
 
-    <label class="trader-label">Shop / Firm Name</label>
-    <input
-      type="text"
-      name="shop_name"
-      class="trader-input"
-      id="shop_name"
-      required
-    />
-    <div id="shop-error" class="error-text"></div>
+      <!-- SHOP NAME -->
+      <div>
+        <label class="label">Shop / Firm Name</label>
+        <input
+          type="text"
+          name="shop_name"
+          id="shop_name"
+          class="input-box"
+          required
+        />
+        <div id="shop-error" class="error-msg"></div>
+      </div>
 
-    <label class="trader-label">Trade License Number</label>
-    <input
-      type="text"
-      name="license"
-      class="trader-input"
-      id="license"
-      required
-    />
-    <div id="license-error" class="error-text"></div>
+      <!-- LICENSE -->
+      <div>
+        <label class="label">Trade License Number</label>
+        <input
+          type="text"
+          name="license"
+          id="license"
+          class="input-box"
+          required
+        />
+        <div id="license-error" class="error-msg"></div>
+      </div>
 
-    <label class="trader-label">Monthly Capacity (tons)</label>
-    <input
-      type="text"
-      name="capacity"
-      class="trader-input"
-      id="capacity"
-      required
-    />
-    <div id="capacity-error" class="error-text"></div>
+      <!-- CAPACITY -->
+      <div>
+        <label class="label">Monthly Capacity (tons)</label>
+        <input
+          type="text"
+          name="capacity"
+          id="capacity"
+          class="input-box"
+          required
+        />
+        <div id="capacity-error" class="error-msg"></div>
+      </div>
+    </div>
 
-    <h3
-      style="
-        color: #0b2348;
-        margin-top: 25px;
-        font-size: 20px;
-        font-weight: 700;
-      "
-    >
-      Preferred Crops
-    </h3>
+    <!-- CROPS -->
+    <h4 class="fw-bold mt-4" style="color: #0b2348; font-size: 20px">
+      <i class="bi bi-list-check me-2"></i>Preferred Crops
+    </h4>
 
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_groundnut" /> Groundnut</label
-    >
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_soybean" /> Soybean</label
-    >
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_sunflower" /> Sunflower</label
-    >
-    <div id="crop-error" class="error-text"></div>
+    <div class="crop-box">
+      <label class="form-check mb-1">
+        <input
+          type="checkbox"
+          name="crop_groundnut"
+          class="form-check-input me-2"
+        />
+        Groundnut
+      </label>
 
-    <button type="submit" class="continue-btn">Continue</button>
+      <label class="form-check mb-1">
+        <input
+          type="checkbox"
+          name="crop_soybean"
+          class="form-check-input me-2"
+        />
+        Soybean
+      </label>
+
+      <label class="form-check mb-1">
+        <input
+          type="checkbox"
+          name="crop_sunflower"
+          class="form-check-input me-2"
+        />
+        Sunflower
+      </label>
+    </div>
+
+    <div id="crop-error" class="error-msg"></div>
+
+    <button type="submit" class="submit-btn">Continue</button>
   </form>
 </div>
 
-<!-- ===================== STRICT VALIDATION JS ===================== -->
+<!-- ===================== VALIDATION SCRIPT (UNCHANGED) ===================== -->
 <script>
-  document
-    .getElementById("trader-form")
-    .addEventListener("submit", function (e) {
-      let valid = true;
+  document.getElementById("trader-form").addEventListener("submit", function (e) {
+    let valid = true;
 
-      document
-        .querySelectorAll(".error-text")
-        .forEach((el) => (el.innerText = ""));
+    document.querySelectorAll(".error-msg").forEach(el => el.innerText = "");
 
-      const name = document.getElementById("full_name").value.trim();
-      const pwd = document.getElementById("password").value.trim();
-      const confirm = document.getElementById("confirm").value.trim();
-      const shop = document.getElementById("shop_name").value.trim();
-      const license = document.getElementById("license").value.trim();
-      const capacity = document.getElementById("capacity").value.trim();
+    const name = full_name.value.trim();
+    const pwd = password.value.trim();
+    const conf = confirm.value.trim();
+    const shop = shop_name.value.trim();
+    const license = license.value.trim();
+    const capacity = capacity.value.trim();
 
-      const crop1 = document.querySelector(
-        "input[name='crop_groundnut']"
-      ).checked;
-      const crop2 = document.querySelector(
-        "input[name='crop_soybean']"
-      ).checked;
-      const crop3 = document.querySelector(
-        "input[name='crop_sunflower']"
-      ).checked;
+    const crop1 = document.querySelector("input[name='crop_groundnut']").checked;
+    const crop2 = document.querySelector("input[name='crop_soybean']").checked;
+    const crop3 = document.querySelector("input[name='crop_sunflower']").checked;
 
-      if (name.length < 3) {
-        document.getElementById("name-error").innerText =
-          "Enter a valid full name.";
-        valid = false;
-      }
+    if (name.length < 3) { name-error.innerText = "Enter a valid full name."; valid = false; }
+    if (pwd.length < 4) { password-error.innerText = "Password must be at least 4 characters."; valid = false; }
+    if (pwd !== conf) { confirm-error.innerText = "Passwords do not match."; valid = false; }
+    if (shop.length < 2) { shop-error.innerText = "Enter a valid shop/firm name."; valid = false; }
+    if (license.length < 3) { license-error.innerText = "Enter a valid license number."; valid = false; }
+    if (!/^[0-9]{1,5}$/.test(capacity)) { capacity-error.innerText = "Enter valid monthly capacity."; valid = false; }
+    if (!crop1 && !crop2 && !crop3) { crop-error.innerText = "Select at least one crop."; valid = false; }
 
-      if (pwd.length < 4) {
-        document.getElementById("password-error").innerText =
-          "Password must be at least 4 characters.";
-        valid = false;
-      }
-
-      if (pwd !== confirm) {
-        document.getElementById("confirm-error").innerText =
-          "Passwords do not match.";
-        valid = false;
-      }
-
-      if (shop.length < 2) {
-        document.getElementById("shop-error").innerText =
-          "Enter a valid shop/firm name.";
-        valid = false;
-      }
-
-      if (license.length < 3) {
-        document.getElementById("license-error").innerText =
-          "Enter a valid license number.";
-        valid = false;
-      }
-
-      if (!/^[0-9]{1,5}$/.test(capacity)) {
-        document.getElementById("capacity-error").innerText =
-          "Enter valid monthly capacity (tons).";
-        valid = false;
-      }
-
-      if (!crop1 && !crop2 && !crop3) {
-        document.getElementById("crop-error").innerText =
-          "Select at least one crop.";
-        valid = false;
-      }
-
-      if (!valid) e.preventDefault();
-    });
+    if (!valid) e.preventDefault();
+  });
 </script>
 
 {% endblock %}

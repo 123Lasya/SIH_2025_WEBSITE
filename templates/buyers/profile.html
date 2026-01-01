@@ -53,18 +53,20 @@
 <h2 class="profile-title">My Profile</h2>
 
 <div class="profile-card">
-  <p class="info-row"><span class="info-label">Name:</span> {{ buyer.name }}</p>
-
   <p class="info-row">
-    <span class="info-label">Mobile:</span> {{ buyer.mobile }}
+    <span class="info-label">Name:</span> Punna Rao {{ buyer.name }}
   </p>
 
   <p class="info-row">
-    <span class="info-label">District:</span> {{ buyer.district }}
+    <span class="info-label">Mobile:</span> 8500214919{{ buyer.mobile }}
   </p>
 
   <p class="info-row">
-    <span class="info-label">Address:</span> {{ buyer.address }}
+    <span class="info-label">District:</span> Guntur {{ buyer.district }}
+  </p>
+
+  <p class="info-row">
+    <span class="info-label">Address:</span> Kattamuru{{ buyer.address }}
   </p>
 
   {% if buyer.gst_number %}

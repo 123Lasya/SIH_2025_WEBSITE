@@ -1,0 +1,158 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- ===================== IN-PAGE CSS ===================== -->
+<style>
+  body {
+    background: #f7f9fc;
+    font-family: "Inter", sans-serif;
+  }
+
+  .faq-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+  }
+
+  .faq-title {
+    text-align: center;
+    font-size: 32px;
+    color: #0b2348;
+    font-weight: 800;
+    margin-bottom: 35px;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: #eef2ff;
+    padding: 16px;
+    border: none;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 700;
+    color: #0b2348;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 12px 0;
+    transition: 0.25s ease;
+  }
+
+  .faq-question:hover {
+    background: #e0e7ff;
+  }
+
+  .faq-question.active {
+    background: #d6ddff;
+  }
+
+  .faq-answer {
+    display: none;
+    margin-top: 8px;
+    padding: 16px;
+    background: #fafbff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.6;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- ===================== HTML ===================== -->
+
+<div class="faq-container">
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+
+  <button class="faq-question">What is Krushi Kisan Suraksha?</button>
+  <div class="faq-answer">
+    Krushi Kisan Suraksha is a government-supported digital platform that helps
+    oilseed farmers manage price risks through hedging, smart contracts, and
+    transparent farmer–buyer agreements.
+  </div>
+
+  <button class="faq-question">How do I verify my Aadhaar?</button>
+  <div class="faq-answer">
+    Go to the Aadhaar Verification page → Enter your 12-digit Aadhaar number →
+    Click Send OTP → Enter OTP to verify successfully.
+  </div>
+
+  <button class="faq-question">Why am I not receiving OTP?</button>
+  <div class="faq-answer">
+    OTP delays can occur due to network issues.<br />
+    Try these steps:<br />
+    • Check mobile network<br />
+    • Ensure number is correct<br />
+    • Wait 30–40 seconds<br />
+    • Try resending OTP
+  </div>
+
+  <button class="faq-question">How do I update my bank details?</button>
+  <div class="faq-answer">
+    Navigate to the Bank Details page, enter your account number, IFSC code, UPI
+    (optional), and press Continue. Your details will be securely updated.
+  </div>
+
+  <button class="faq-question">What crops are supported?</button>
+  <div class="faq-answer">
+    Currently supported crops include Groundnut, Soybean, and Sunflower. More
+    oilseed crops will be added soon.
+  </div>
+
+  <button class="faq-question">
+    What is hedging and how does it help farmers?
+  </button>
+  <div class="faq-answer">
+    Hedging allows farmers to lock in future selling prices and protect
+    themselves from market fluctuations. This ensures stable income even when
+    market prices drop.
+  </div>
+
+  <button class="faq-question">Is my data secure?</button>
+  <div class="faq-answer">
+    Yes. All personal details—including Aadhaar, bank information, and
+    contracts—are processed over encrypted & secure government-grade channels.
+  </div>
+
+  <button class="faq-question">How do buyers/traders register?</button>
+  <div class="faq-answer">
+    Buyers select their type (Business or Trader), verify email, fill company
+    details, upload basic forms, and they are approved after verification.
+  </div>
+
+  <button class="faq-question">How do I contact support?</button>
+  <div class="faq-answer">
+    You can contact us:<br />
+    Email: support@krishisetu.gov.in<br />
+    Helpline: 1800-KRISHISETU<br />
+    Support Hours: Mon–Sat, 9 AM – 6 PM
+  </div>
+</div>
+
+<!-- ===================== JS ===================== -->
+<script>
+  document.querySelectorAll(".faq-question").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("active");
+      let content = btn.nextElementSibling;
+      content.style.display =
+        content.style.display === "block" ? "none" : "block";
+    });
+  });
+</script>
+
+{% endblock %}

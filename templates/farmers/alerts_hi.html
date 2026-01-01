@@ -1,0 +1,155 @@
+{% extends 'farmers/farmer_base_hi.html' %} {% block farmer_content %}
+
+<style>
+  /* PAGE TITLE */
+  .alerts-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 25px;
+    font-family: "Inter", sans-serif;
+  }
+
+  /* CARD WRAPPER */
+  .alert-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    max-width: 1100px;
+    font-family: "Inter", sans-serif;
+  }
+
+  /* TABLE */
+  .alert-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  /* HEADER */
+  .alert-table thead tr {
+    background: #062348;
+    color: white;
+  }
+
+  .alert-table th {
+    padding: 14px;
+    font-weight: 600;
+  }
+
+  /* CURVED HEADER CORNERS */
+  .alert-table thead th:first-child {
+    border-top-left-radius: 14px;
+  }
+  .alert-table thead th:last-child {
+    border-top-right-radius: 14px;
+  }
+
+  /* ROWS */
+  .alert-table td {
+    padding: 16px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* HOVER EFFECT */
+  .alert-table tbody tr:hover td {
+    background: #f5f7fa;
+    transition: 0.25s ease;
+  }
+
+  /* STATUS BADGE */
+  .status-new {
+    background: #e2f7e9;
+    color: #0a8c3a;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .status-read {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /* BUTTON */
+  .view-btn {
+    background: #062348;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .view-btn:hover {
+    background: #0e3b78;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  }
+</style>
+
+<h2 class="alerts-title">अलर्ट</h2>
+
+<div class="alert-card">
+  {% if alerts %}
+  <table class="alert-table">
+    <thead>
+      <tr>
+        <th>संदेश</th>
+        <th>समय</th>
+        <th>स्थिति</th>
+        <th>क्रिया</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for a in alerts %}
+      <tr>
+        <td>{{ a.message }}</td>
+        <td>{{ a.created_at }}</td>
+
+        <td>
+          {% if a.is_read %}
+          <span class="status-read">पढ़ा गया</span>
+          {% else %}
+          <span class="status-new">नया</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% if a.contract %}
+          <a
+            href="{% url 'farmer_contract_detail' a.contract.id %}"
+            class="view-btn"
+          >
+            अनुबंध देखें
+          </a>
+          {% else %} --- {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <p>अभी तक कोई अलर्ट नहीं।</p>
+  {% endif %}
+</div>
+
+{% endblock %}

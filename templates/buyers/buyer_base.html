@@ -1,15 +1,24 @@
 {% extends "base.html" %} {% block content %}
 
-<!-- ===================== BUYER NAV CSS ===================== -->
+<!-- ===================== BUYER NAV CSS (PREMIUM UI) ===================== -->
 <style>
+  /* NAV WRAPPER CENTER ALIGNMENT */
+  .buyer-nav-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* NAVIGATION BAR */
   .buyer-nav {
     background: #0b2348;
     padding: 14px 24px;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     display: flex;
-    gap: 28px;
+    gap: 18px;
     flex-wrap: wrap;
+    justify-content: center;
     font-family: "Inter", sans-serif;
   }
 
@@ -17,84 +26,97 @@
     color: #ffffff;
     text-decoration: none;
     font-size: 15px;
-    padding: 8px 14px;
-    border-radius: 6px;
     font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
     transition: 0.25s ease;
   }
 
   .buyer-nav a:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.18);
     transform: translateY(-2px);
   }
 
-  /* Highlight current page */
+  /* ACTIVE LINK STYLE — CLEAN NAVY HIGHLIGHT */
   .buyer-active {
-    background: #2ba37a !important;
-    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.28) !important;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
   }
 
+  /* CONTENT AREA */
   .buyer-page-container {
-    padding: 35px 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px 40px 15px;
+    font-family: "Inter", sans-serif;
   }
 
+  /* MOBILE RESPONSIVE */
   @media (max-width: 768px) {
     .buyer-nav {
-      padding: 12px;
+      padding: 10px;
       gap: 12px;
+    }
+    .buyer-nav a {
+      font-size: 13.5px;
+      padding: 7px 12px;
     }
   }
 </style>
 
-<!-- ===================== BUYER NAV ===================== -->
-<nav class="buyer-nav">
-  <a
-    href="{% url 'buyer_dashboard' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_dashboard' %}buyer-active{% endif %}"
-  >
-    Dashboard
-  </a>
+<!-- ===================== BUYER NAVBAR ===================== -->
+<div class="buyer-nav-wrapper">
+  <nav class="buyer-nav">
+    <a
+      href="{% url 'buyer_dashboard' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_dashboard' %}buyer-active{% endif %}"
+    >
+      Dashboard
+    </a>
 
-  <a
-    href="{% url 'buyer_my_hedges' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_my_hedges' %}buyer-active{% endif %}"
-  >
-    My Hedges
-  </a>
+    <a
+      href="{% url 'buyer_my_hedges' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_my_hedges' %}buyer-active{% endif %}"
+    >
+      My Option Trading
+    </a>
 
-  <a
-    href="{% url 'buyer_my_contracts' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_my_contracts' %}buyer-active{% endif %}"
-  >
-    My Contracts
-  </a>
+    <a
+      href="{% url 'buyer_my_contracts' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_my_contracts' %}buyer-active{% endif %}"
+    >
+      My Forward Contracts
+    </a>
 
-  <a
-    href="{% url 'buyer_contract_lookup' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_contract_lookup' %}buyer-active{% endif %}"
-  >
-    Contract Lookup
-  </a>
+    <a
+      href="{% url 'buyer_contract_lookup' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_contract_lookup' %}buyer-active{% endif %}"
+    >
+      Contract Lookup
+    </a>
 
-  <a
-    href="{% url 'buyer_alerts' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_alerts' %}buyer-active{% endif %}"
-  >
-    Alerts
-  </a>
+    <a
+      href="{% url 'buyer_alerts' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_alerts' %}buyer-active{% endif %}"
+    >
+      Alerts
+    </a>
 
-  <a
-    href="{% url 'buyer_profile' %}"
-    class="{% if request.resolver_match.url_name == 'buyer_profile' %}buyer-active{% endif %}"
-  >
-    Profile
-  </a>
-</nav>
+    <a
+      href="{% url 'buyer_profile' %}"
+      class="{% if request.resolver_match.url_name == 'buyer_profile' %}buyer-active{% endif %}"
+    >
+      Profile
+    </a>
+  </nav>
+</div>
 
-<!-- ===================== BUYER CONTENT WRAPPER ===================== -->
+<!-- ===================== PAGE CONTENT ===================== -->
 <div class="buyer-page-container">{% block buyer_content %}{% endblock %}</div>
 
-<!-- CHART LIBRARY -->
+<!-- ===================== CHART LIBRARY ===================== -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% block buyer_extra_js %}{% endblock %} {% endblock %}

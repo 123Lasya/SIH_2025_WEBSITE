@@ -1,0 +1,22 @@
+{% extends 'farmers/farmer_base.html' %} {% block farmer_content %}
+<h2>Contract Detail – #{{ contract.id }}</h2>
+
+<p><strong>Crop:</strong> {{ contract.crop }}</p>
+<p><strong>Quantity:</strong> {{ contract.quantity }}</p>
+<p><strong>Grade A Price:</strong> {{ contract.grade_a_price }}</p>
+<p><strong>Grade B Price:</strong> {{ contract.grade_b_price }}</p>
+<p><strong>Grade C Price:</strong> {{ contract.grade_c_price }}</p>
+<p><strong>Warehouse:</strong> {{ contract.warehouse }}</p>
+<p><strong>Start Date:</strong> {{ contract.start_date }}</p>
+<p><strong>End Date:</strong> {{ contract.end_date }}</p>
+
+<p><strong>Status:</strong> {{ contract.buyer_status }}</p>
+
+<p>
+  <strong>Buyer:</strong>
+  {% if contract.buyer %} {{ contract.buyer.username }} {% else %} Not yet
+  accepted {% endif %}
+</p>
+
+<a href="{% url 'farmer_my_contracts' %}">Back to My Contracts</a>
+{% endblock %}

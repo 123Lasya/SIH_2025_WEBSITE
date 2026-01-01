@@ -1,0 +1,119 @@
+{% extends 'farmers/farmer_base_hi.html' %} {% block farmer_content %}
+
+<!-- PAGE CSS -->
+<style>
+  .profile-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0b2348;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 25px;
+  }
+
+  .profile-card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    max-width: 850px;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 25px;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 18px;
+  }
+
+  .profile-item {
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #374151;
+  }
+
+  .profile-item strong {
+    color: #0b2348;
+  }
+
+  /* Edit button */
+  .edit-btn {
+    background: #0b2348;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 18px;
+  }
+
+  .edit-btn:hover {
+    background: #143766;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+  }
+
+  /* Divider */
+  .divider {
+    height: 2px;
+    background: #e5e7eb;
+    margin: 25px 0;
+    border-radius: 5px;
+  }
+</style>
+
+<h2 class="profile-title">मेरा प्रोफ़ाइल</h2>
+
+<!-- PERSONAL DETAILS CARD -->
+<div class="profile-card">
+  <h3 class="section-title">व्यक्तिगत विवरण</h3>
+
+  <p class="profile-item">
+    <strong>नाम:</strong> {{ request.user.first_name }}
+  </p>
+  <p class="profile-item"><strong>ईमेल:</strong> {{ request.user.email }}</p>
+  <p class="profile-item">
+    <strong>आधार:</strong> {{ farmer.aadhaar_number }}
+  </p>
+  <p class="profile-item"><strong>मोबाइल:</strong> {{ farmer.mobile }}</p>
+  <p class="profile-item">
+    <strong>वैकल्पिक मोबाइल:</strong> {{ farmer.alternate_mobile }}
+  </p>
+
+  <p class="profile-item"><strong>ग्राम:</strong> {{ farmer.village }}</p>
+  <p class="profile-item"><strong>मंडल:</strong> {{ farmer.mandal }}</p>
+  <p class="profile-item"><strong>जिला:</strong> {{ farmer.district }}</p>
+  <p class="profile-item">
+    <strong>भूमि का आकार (एकड़):</strong> {{ farmer.land_size }}
+  </p>
+</div>
+
+<!-- BANK DETAILS CARD
+<div class="profile-card">
+  <h3 class="section-title">Bank Details</h3>
+
+  {% if bank %}
+  <p class="profile-item">
+    <strong>Account Holder:</strong> {{ bank.account_holder_name }}
+  </p>
+  <p class="profile-item"><strong>Bank Name:</strong> {{ bank.bank_name }}</p>
+  <p class="profile-item">
+    <strong>Account Number:</strong> {{ bank.account_number }}
+  </p>
+  <p class="profile-item"><strong>IFSC:</strong> {{ bank.ifsc_code }}</p>
+  <p class="profile-item"><strong>UPI:</strong> {{ bank.upi_id }}</p>
+  {% else %}
+  <p class="profile-item" style="color: #6b7280">No bank details added yet.</p>
+  {% endif %}
+</div> -->
+
+<!-- EDIT BUTTON -->
+<a href="{% url 'farmer_profile_edit' %}" class="edit-btn">प्रोफ़ाइल संपादित करें</a>
+
+{% endblock %}

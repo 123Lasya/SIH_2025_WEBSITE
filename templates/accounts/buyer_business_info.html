@@ -1,39 +1,49 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- ===================== IN-PAGE CSS ===================== -->
 <style>
   .buyer-wrapper {
-    max-width: 550px;
-    margin: 50px auto;
-    padding: 32px;
+    max-width: 780px;
+    margin: 60px auto;
+    padding: 35px;
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 20px;
     border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
     font-family: "Inter", sans-serif;
+    animation: fadeIn 0.6s ease-out;
   }
 
-  .buyer-wrapper h2 {
+  .buyer-title {
     text-align: center;
     color: #0b2348;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     margin-bottom: 20px;
+  }
+
+  .buyer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 30px;
+  }
+
+  @media (max-width: 768px) {
+    .buyer-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .buyer-label {
     font-weight: 600;
     color: #4b5563;
-    display: block;
     margin-bottom: 6px;
-    margin-top: 12px;
   }
 
   .buyer-input,
   .buyer-select {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
     font-size: 15px;
     transition: 0.25s ease;
@@ -42,244 +52,278 @@
   .buyer-input:focus,
   .buyer-select:focus {
     border-color: #0b2348;
-    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.15);
+    box-shadow: 0 0 0 3px rgba(11, 35, 72, 0.18);
     outline: none;
   }
 
-  .crop-checkbox {
-    margin: 5px 0;
-    font-weight: 500;
-    color: #4b5563;
+  .error-msg {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 3px;
+    font-weight: 600;
   }
 
-  .continue-btn {
+  .crop-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: -8px;
+  }
+
+  .buyer-btn {
     width: 100%;
     background: #0b2348;
-    color: #ffffff;
-    padding: 14px 0;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
     border: none;
-    border-radius: 10px;
-    margin-top: 22px;
-    font-size: 17px;
+    margin-top: 20px;
+    font-size: 18px;
     font-weight: 600;
-    cursor: pointer;
     transition: 0.25s ease;
   }
 
-  .continue-btn:hover {
+  .buyer-btn:hover {
     background: #132f63;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(11, 35, 72, 0.35);
+    box-shadow: 0 8px 20px rgba(11, 35, 72, 0.3);
   }
 
-  .error-text {
-    color: #dc2626;
-    font-size: 14px;
-    margin-top: 4px;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
-<!-- ===================== HTML ===================== -->
-
 <div class="buyer-wrapper">
-  <h2>Business Buyer Registration</h2>
+  <h2 class="buyer-title">
+    <i class="bi bi-building-fill-check me-2"></i>
+    Business Buyer Registration
+  </h2>
 
   {% if messages %} {% for msg in messages %}
-  <p class="error-text" style="text-align: center">{{ msg }}</p>
+  <p class="text-danger fw-semibold text-center">{{ msg }}</p>
   {% endfor %} {% endif %}
 
   <form method="post" id="buyer-form">
     {% csrf_token %}
 
-    <label class="buyer-label">Full Name</label>
-    <input
-      type="text"
-      name="full_name"
-      class="buyer-input"
-      id="full_name"
-      required
-    />
-    <div id="name-error" class="error-text"></div>
+    <!-- GRID INPUTS -->
+    <div class="buyer-grid">
+      <!-- Full Name -->
+      <div>
+        <label class="buyer-label">Full Name</label>
+        <input
+          type="text"
+          name="full_name"
+          id="full_name"
+          class="buyer-input"
+          required
+        />
+        <div id="name-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Password</label>
-    <input
-      type="password"
-      name="password"
-      class="buyer-input"
-      id="password"
-      required
-    />
-    <div id="password-error" class="error-text"></div>
+      <!-- Password -->
+      <div>
+        <label class="buyer-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="buyer-input"
+          required
+        />
+        <div id="password-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Confirm Password</label>
-    <input
-      type="password"
-      name="confirm"
-      class="buyer-input"
-      id="confirm"
-      required
-    />
-    <div id="confirm-error" class="error-text"></div>
+      <!-- Confirm -->
+      <div>
+        <label class="buyer-label">Confirm Password</label>
+        <input
+          type="password"
+          name="confirm"
+          id="confirm"
+          class="buyer-input"
+          required
+        />
+        <div id="confirm-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Company Name</label>
-    <input
-      type="text"
-      name="company_name"
-      class="buyer-input"
-      id="company"
-      required
-    />
-    <div id="company-error" class="error-text"></div>
+      <!-- Company Name -->
+      <div>
+        <label class="buyer-label">Company Name</label>
+        <input
+          type="text"
+          name="company_name"
+          id="company"
+          class="buyer-input"
+          required
+        />
+        <div id="company-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Company Type</label>
-    <select name="company_type" class="buyer-select" id="company_type" required>
-      <option>Oil Mill</option>
-      <option>Food Processor</option>
-      <option>Manufacturer</option>
-      <option>Exporter</option>
-    </select>
+      <!-- Company Type -->
+      <div>
+        <label class="buyer-label">Company Type</label>
+        <select
+          name="company_type"
+          id="company_type"
+          class="buyer-select"
+          required
+        >
+          <option>Oil Mill</option>
+          <option>Food Processor</option>
+          <option>Manufacturer</option>
+          <option>Exporter</option>
+        </select>
+      </div>
 
-    <label class="buyer-label">GST Number</label>
-    <input type="text" name="gst" class="buyer-input" id="gst" required />
-    <div id="gst-error" class="error-text"></div>
+      <!-- GST -->
+      <div>
+        <label class="buyer-label">GST Number</label>
+        <input type="text" name="gst" id="gst" class="buyer-input" required />
+        <div id="gst-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Business Phone</label>
-    <input
-      type="text"
-      name="business_phone"
-      class="buyer-input"
-      id="business_phone"
-      required
-    />
-    <div id="phone-error" class="error-text"></div>
+      <!-- Business Phone -->
+      <div>
+        <label class="buyer-label">Business Phone</label>
+        <input
+          type="text"
+          name="business_phone"
+          id="business_phone"
+          class="buyer-input"
+          required
+        />
+        <div id="phone-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Factory Address</label>
-    <input
-      type="text"
-      name="factory_address"
-      class="buyer-input"
-      id="factory"
-      required
-    />
-    <div id="factory-error" class="error-text"></div>
+      <!-- Factory Address -->
+      <div>
+        <label class="buyer-label">Factory Address</label>
+        <input
+          type="text"
+          name="factory_address"
+          id="factory"
+          class="buyer-input"
+          required
+        />
+        <div id="factory-error" class="error-msg"></div>
+      </div>
 
-    <label class="buyer-label">Oil Seed Intake (per month)</label>
-    <input type="text" name="intake" class="buyer-input" id="intake" required />
-    <div id="intake-error" class="error-text"></div>
+      <!-- Intake -->
+      <div>
+        <label class="buyer-label">Oil Seed Intake (per month)</label>
+        <input
+          type="text"
+          name="intake"
+          id="intake"
+          class="buyer-input"
+          required
+        />
+        <div id="intake-error" class="error-msg"></div>
+      </div>
+    </div>
 
-    <h3
-      style="
-        color: #0b2348;
-        margin-top: 25px;
-        font-size: 20px;
-        font-weight: 700;
-      "
-    >
-      Preferred Crops
-    </h3>
+    <!-- Preferred Crops Section -->
+    <h4 class="fw-bold mt-4" style="color: #0b2348; font-size: 20px">
+      <i class="bi bi-list-check me-2"></i>Preferred Crops
+    </h4>
 
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_groundnut" /> Groundnut</label
-    >
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_soybean" /> Soybean</label
-    >
-    <label class="crop-checkbox"
-      ><input type="checkbox" name="crop_sunflower" /> Sunflower</label
-    >
-    <div id="crop-error" class="error-text"></div>
+    <div class="crop-box">
+      <label class="form-check mb-1">
+        <input
+          type="checkbox"
+          name="crop_groundnut"
+          class="form-check-input me-2"
+        />
+        Groundnut
+      </label>
 
-    <button type="submit" class="continue-btn">Continue</button>
+      <label class="form-check mb-1">
+        <input
+          type="checkbox"
+          name="crop_soybean"
+          class="form-check-input me-2"
+        />
+        Soybean
+      </label>
+
+      <label class="form-check">
+        <input
+          type="checkbox"
+          name="crop_sunflower"
+          class="form-check-input me-2"
+        />
+        Sunflower
+      </label>
+    </div>
+
+    <div id="crop-error" class="error-msg mb-2"></div>
+
+    <button type="submit" class="buyer-btn">Continue</button>
   </form>
 </div>
 
-<!-- ===================== STRICT VALIDATION JS ===================== -->
+<!-- ===================== STRICT VALIDATION JS (NO BACKEND CHANGE) ===================== -->
 <script>
-  document
-    .getElementById("buyer-form")
-    .addEventListener("submit", function (e) {
-      let valid = true;
+  document.getElementById("buyer-form").addEventListener("submit", function (e) {
+    let valid = true;
 
-      document
-        .querySelectorAll(".error-text")
-        .forEach((el) => (el.innerText = ""));
+    document.querySelectorAll(".error-msg").forEach(el => el.innerText = "");
 
-      const name = document.getElementById("full_name").value.trim();
-      const pwd = document.getElementById("password").value.trim();
-      const confirm = document.getElementById("confirm").value.trim();
-      const company = document.getElementById("company").value.trim();
-      const gst = document.getElementById("gst").value.trim();
-      const phone = document.getElementById("business_phone").value.trim();
-      const factory = document.getElementById("factory").value.trim();
-      const intake = document.getElementById("intake").value.trim();
+    const name = full_name.value.trim();
+    const pwd = password.value.trim();
+    const confirmPwd = confirm.value.trim();
+    const company = company.value.trim();
+    const gst = gst.value.trim();
+    const phone = business_phone.value.trim();
+    const factory = factory.value.trim();
+    const intake = intake.value.trim();
 
-      const crop1 = document.querySelector(
-        "input[name='crop_groundnut']"
-      ).checked;
-      const crop2 = document.querySelector(
-        "input[name='crop_soybean']"
-      ).checked;
-      const crop3 = document.querySelector(
-        "input[name='crop_sunflower']"
-      ).checked;
+    const crop1 = document.querySelector("input[name='crop_groundnut']").checked;
+    const crop2 = document.querySelector("input[name='crop_soybean']").checked;
+    const crop3 = document.querySelector("input[name='crop_sunflower']").checked;
 
-      if (name.length < 3) {
-        document.getElementById("name-error").innerText =
-          "Enter a valid full name.";
-        valid = false;
-      }
+    if (name.length < 3) { name-error.innerText = "Enter a valid full name."; valid = false; }
+    if (pwd.length < 4) { password-error.innerText = "Password must be at least 4 characters."; valid = false; }
+    if (pwd !== confirmPwd) { confirm-error.innerText = "Passwords do not match."; valid = false; }
+    if (company.length < 2) { company-error.innerText = "Enter a valid company name."; valid = false; }
 
-      if (pwd.length < 4) {
-        document.getElementById("password-error").innerText =
-          "Password must be at least 4 characters.";
-        valid = false;
-      }
+    if (!/^[0-9A-Z]{15}$/.test(gst)) {
+      gst-error.innerText = "Enter a valid 15-character GST number.";
+      valid = false;
+    }
 
-      if (pwd !== confirm) {
-        document.getElementById("confirm-error").innerText =
-          "Passwords do not match.";
-        valid = false;
-      }
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      phone-error.innerText = "Enter a valid 10-digit phone number.";
+      valid = false;
+    }
 
-      if (company.length < 2) {
-        document.getElementById("company-error").innerText =
-          "Enter a valid company name.";
-        valid = false;
-      }
+    if (factory.length < 5) {
+      factory-error.innerText = "Enter a complete factory address.";
+      valid = false;
+    }
 
-      const gstPattern = /^[0-9A-Z]{15}$/;
-      if (!gstPattern.test(gst)) {
-        document.getElementById("gst-error").innerText =
-          "Enter a valid 15-character GST number.";
-        valid = false;
-      }
+    if (!/^[0-9]{1,5}$/.test(intake)) {
+      intake-error.innerText = "Enter valid monthly intake.";
+      valid = false;
+    }
 
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        document.getElementById("phone-error").innerText =
-          "Enter a valid 10-digit phone number.";
-        valid = false;
-      }
+    if (!crop1 && !crop2 && !crop3) {
+      crop-error.innerText = "Select at least one crop.";
+      valid = false;
+    }
 
-      if (factory.length < 5) {
-        document.getElementById("factory-error").innerText =
-          "Enter a complete factory address.";
-        valid = false;
-      }
-
-      if (!/^[0-9]{1,5}$/.test(intake)) {
-        document.getElementById("intake-error").innerText =
-          "Enter valid monthly intake quantity.";
-        valid = false;
-      }
-
-      if (!crop1 && !crop2 && !crop3) {
-        document.getElementById("crop-error").innerText =
-          "Select at least one crop.";
-        valid = false;
-      }
-
-      if (!valid) e.preventDefault();
-    });
+    if (!valid) e.preventDefault();
+  });
 </script>
 
 {% endblock %}

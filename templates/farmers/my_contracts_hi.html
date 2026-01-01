@@ -1,0 +1,161 @@
+{% extends 'farmers/farmer_base.html' %} {% block farmer_content %}
+
+<style>
+  .contracts-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0b2348;
+    margin-bottom: 25px;
+    font-family: "Inter", sans-serif;
+  }
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0b2348;
+  }
+  .contract-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card {
+    padding: 18px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    font-family: Inter;
+  }
+  .line {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .s-pending {
+    background: #f59e0b;
+  }
+  .s-wait {
+    background: #6366f1;
+  }
+  .s-active {
+    background: #2ba37a;
+  }
+  .s-expired {
+    background: #dc2626;
+  }
+  .btn-view {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: #0b2348;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .empty {
+    color: #6b7280;
+    font-size: 15px;
+  }
+</style>
+
+<h2 class="contracts-title">मेरे अनुबंध</h2>
+
+<!-- 1️⃣ WAITING FOR BUYER APPROVAL -->
+<div class="section">
+  <h3 class="section-title">खरीदार की स्वीकृति की प्रतीक्षा</h3>
+  <div class="contract-list">
+    {% for c in contracts %} {% if c.buyer_status == "PENDING" %}
+    <div class="card">
+      <div class="line">
+        <strong>{{ c.crop }}</strong> — {{ c.quantity }} kg
+      </div>
+      <span class="status s-pending">प्रतीक्षारत (खरीदार)</span>
+      <div class="line">{{ c.start_date }} → {{ c.end_date }}</div>
+      <a href="{% url 'farmer_contract_detail' c.id %}" class="btn-view">देखें</a>
+    </div>
+    {% endif %} {% empty %}
+    <p class="empty">कोई लंबित अनुबंध नहीं।</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- 2️⃣ WAITING FOR FARMER APPROVAL (Buyer Accepted) -->
+<div class="section">
+  <h3 class="section-title">खरीदार द्वारा स्वीकार किया गया — आपकी स्वीकृति का انتظار</h3>
+  <div class="contract-list">
+    {% for c in contracts %} {% if c.buyer_status == "BUYER_ACCEPTED" %}
+    <div class="card">
+      <div class="line">
+        <strong>{{ c.crop }}</strong> — {{ c.quantity }} kg
+      </div>
+      <span class="status s-wait">किसान की स्वीकृति का इंतजार</span>
+      <div class="line"><strong>खरीदार:</strong> {{ c.buyer.username }}</div>
+      <div class="line">{{ c.start_date }} → {{ c.end_date }}</div>
+      <a href="{% url 'farmer_contract_detail' c.id %}" class="btn-view">समीक्षा करें</a>
+    </div>
+    {% endif %} {% empty %}
+    <p class="empty">कोई स्वीकार किए गए अनुबंध नहीं।</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- 3️⃣ ACTIVE CONTRACTS (Farmer Approved) -->
+<div class="section">
+  <h3 class="section-title">सक्रिय अनुबंध</h3>
+  <div class="contract-list">
+    {% for c in contracts %} {% if c.contract_status == "ACTIVE" %}
+    <div class="card">
+      <div class="line">
+        <strong>{{ c.crop }}</strong> — {{ c.quantity }} kg
+      </div>
+      <span class="status s-active">सक्रिय</span>
+      <div class="line"><strong>Buyer:</strong> {{ c.buyer.username }}</div>
+      <div class="line">{{ c.start_date }} → {{ c.end_date }}</div>
+      <a href="{% url 'farmer_contract_detail' c.id %}" class="btn-view">देखें</a>
+    </div>
+    {% endif %} {% empty %}
+    <p class="empty">कोई सक्रिय अनुबंध नहीं।</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- 4️⃣ EXPIRED / COMPLETED -->
+<div class="section">
+  <h3 class="section-title">समाप्त / पूर्ण</h3>
+  <div class="contract-list">
+    {% for c in contracts %}
+    <!-- prettier-igonor -->
+    {% if c.contract_status == "EXPIRED" or c.contract_status == "COMPLETED" %}
+    <div class="card">
+      <div class="line">
+        <strong>{{ c.crop }}</strong> — {{ c.quantity }} kg
+      </div>
+      <span
+        class="status {% if c.contract_status == 'EXPIRED' %}s-expired{% else %}s-active{% endif %}"
+      >
+        {{ c.contract_status }}
+      </span>
+      <div class="line"><strong>Buyer:</strong> {{ c.buyer.username }}</div>
+      <div class="line">{{ c.start_date }} → {{ c.end_date }}</div>
+      <a href="{% url 'farmer_contract_detail' c.id %}" class="btn-view"
+        >View</a
+      >
+    </div>
+    {% endif %}
+    <!-- prettier-igonor -->
+    {% empty %}
+    <p class="empty">कोई समाप्त या पूर्ण अनुबंध नहीं।</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

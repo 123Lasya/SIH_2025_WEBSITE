@@ -2,14 +2,22 @@
 
 <!-- ===================== FARMER NAV CSS ===================== -->
 <style>
+  /* NAV WRAPPER CENTERED */
+  .farmer-nav-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
   .farmer-nav {
     background: #0b2348;
     padding: 14px 24px;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 30px 0px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     display: flex;
-    gap: 24px;
+    gap: 18px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .farmer-nav a {
@@ -18,79 +26,98 @@
     font-family: "Inter", sans-serif;
     font-size: 15px;
     font-weight: 500;
-    padding: 8px 14px;
-    border-radius: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
     transition: 0.25s ease;
   }
 
   .farmer-nav a:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
   }
 
-  /* Active link styling */
+  /* ACTIVE LINK — NOW DARK NAVY (NO GREEN) */
   .farmer-active {
-    background: #2ba37a !important; /* green highlight */
+    background: #0e3b78 !important; /* Navy highlight instead of green */
+    color: #ffffff !important;
     font-weight: 600;
+    box-shadow: 0 4px 14px rgba(14, 59, 120, 0.35);
   }
 
-  /* Container spacing */
+  /* CONTENT AREA */
   .farmer-content-area {
-    margin-top: 25px;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+  }
+
+  /* MOBILE FIXES */
+  @media (max-width: 768px) {
+    .farmer-nav {
+      padding: 12px 10px;
+      gap: 10px;
+    }
+
+    .farmer-nav a {
+      font-size: 14px;
+      padding: 7px 12px;
+    }
   }
 </style>
 
 <!-- ===================== FARMER NAVBAR ===================== -->
-<nav class="farmer-nav">
-  <a
-    href="{% url 'farmer_dashboard' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_dashboard' %}farmer-active{% endif %}"
-  >
-    Dashboard
-  </a>
+<div class="farmer-nav-wrapper">
+  <nav class="farmer-nav">
+    <a
+      href="{% url 'farmer_dashboard' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_dashboard' %}farmer-active{% endif %}"
+    >
+      Dashboard
+    </a>
 
-  <a
-    href="{% url 'farmer_create_contract' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_create_contract' %}farmer-active{% endif %}"
-  >
-    Create Contract
-  </a>
+    <a
+      href="{% url 'farmer_create_contract' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_create_contract' %}farmer-active{% endif %}"
+    >
+      Create Forward Contracts
+    </a>
 
-  <a
-    href="{% url 'farmer_create_hedge' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_create_hedge' %}farmer-active{% endif %}"
-  >
-    Create Hedge
-  </a>
+    <a
+      href="{% url 'farmer_create_hedge' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_create_hedge' %}farmer-active{% endif %}"
+    >
+      Create Option Trading
+    </a>
 
-  <a
-    href="{% url 'farmer_education' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_education' %}farmer-active{% endif %}"
-  >
-    Education
-  </a>
+    <a
+      href="{% url 'farmer_education' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_education' %}farmer-active{% endif %}"
+    >
+      Education
+    </a>
 
-  <a
-    href="{% url 'farmer_gov_support' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_gov_support' %}farmer-active{% endif %}"
-  >
-    Gov Support
-  </a>
+    <a
+      href="{% url 'farmer_gov_support' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_gov_support' %}farmer-active{% endif %}"
+    >
+      Gov Support
+    </a>
 
-  <a
-    href="{% url 'farmer_alerts' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_alerts' %}farmer-active{% endif %}"
-  >
-    Alerts
-  </a>
+    <a
+      href="{% url 'farmer_alerts' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_alerts' %}farmer-active{% endif %}"
+    >
+      Alerts
+    </a>
 
-  <a
-    href="{% url 'farmer_profile' %}"
-    class="{% if request.resolver_match.url_name == 'farmer_profile' %}farmer-active{% endif %}"
-  >
-    Profile
-  </a>
-</nav>
+    <a
+      href="{% url 'farmer_profile' %}"
+      class="{% if request.resolver_match.url_name == 'farmer_profile' %}farmer-active{% endif %}"
+    >
+      Profile
+    </a>
+  </nav>
+</div>
 
 <!-- ===================== CONTENT AREA ===================== -->
 <div class="farmer-content-area">{% block farmer_content %}{% endblock %}</div>

@@ -1,0 +1,149 @@
+{% extends "panel/panel_base.html" %} {% block content %}
+
+<style>
+  .page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0b2348;
+    margin-bottom: 20px;
+    font-family: "Inter", sans-serif;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0b2348;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-family: "Inter", sans-serif;
+  }
+
+  .action-buttons {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .btn-export {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white !important;
+    border: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-csv {
+    background: #0b2348;
+  }
+  .btn-csv:hover {
+    background: #132f63;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(11, 35, 72, 0.25);
+  }
+
+  .btn-excel {
+    background: #2ba37a;
+  }
+  .btn-excel:hover {
+    background: #218a64;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(43, 163, 122, 0.25);
+  }
+
+  .table-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    margin-bottom: 35px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Inter", sans-serif;
+  }
+
+  th {
+    background: #0b2348;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  td {
+    padding: 12px;
+    font-size: 15px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  tr:hover td {
+    background: #f2f6fa;
+  }
+</style>
+
+<h2 class="page-title">All Hedges</h2>
+
+<!-- EXPORT BUTTONS -->
+<div class="action-buttons">
+  <a href="{% url 'admin_export_hedges_csv' %}" class="btn-export btn-csv"
+    >Export CSV</a
+  >
+  <a href="{% url 'admin_export_hedges_excel' %}" class="btn-export btn-excel"
+    >Export Excel</a
+  >
+</div>
+
+<!-- FARMER HEDGES TABLE -->
+<h3 class="section-title">Farmer Hedges</h3>
+<div class="table-card">
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Farmer</th>
+      <th>Crop</th>
+      <th>Quantity</th>
+    </tr>
+    {% for h in farmer_hedges %}
+    <tr>
+      <td>{{ h.id }}</td>
+      <td>{{ h.farmer.user.first_name }}</td>
+      <td>{{ h.crop }}</td>
+      <td>{{ h.quantity }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<!-- BUYER HEDGES TABLE -->
+<h3 class="section-title">Buyer Hedges</h3>
+<div class="table-card">
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Buyer</th>
+      <th>Crop</th>
+      <th>Quantity</th>
+    </tr>
+    {% for h in buyer_hedges %}
+    <tr>
+      <td>{{ h.id }}</td>
+      <td>{{ h.buyer.email }}</td>
+      <td>{{ h.crop }}</td>
+      <td>{{ h.quantity }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

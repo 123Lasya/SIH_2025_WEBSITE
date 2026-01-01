@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from decimal import Decimal
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # 1) Dummy Aadhaar KYC table for farmers
 class FarmerAadhaarKYC(models.Model):
@@ -97,3 +101,25 @@ class BankDetail(models.Model):
 
     def __str__(self):
         return f"Bank: {self.user.username} - {self.account_number}"
+    
+
+class Wallet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wallet")
+    balance = models.DecimalField(max_digits=14, decimal_places=2, default=0)
+    locked_margin = models.DecimalField(max_digits=14, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"Wallet({self.user.username})"
+
+    @property
+    def available_balance(self):
+        return self.balance - self.locked_margin
+
+
+@receiver(post_save, sender=User)
+def create_wallet_for_user(sender, instance, created, **kwargs):
+    """
+    Automatically create a Wallet whenever a new User is created.
+    """
+    if created:
+        Wallet.objects.create(user=instance)

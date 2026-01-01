@@ -62,7 +62,7 @@
   <body>
     <header>
       <div class="header-wrapper">
-        <div><strong>Krushi Kisan Suraksha</strong></div>
+        <div><strong>KrishiSetu</strong></div>
 
         <nav>
           {% if user.is_authenticated %}
@@ -83,9 +83,20 @@
           <a href="/accounts/select-role/">Signup</a>
           {% endif %}
         </nav>
+        <div style="margin-left: 12px">
+          <a
+            href="{% url 'set_language' %}?lang=en&next={{ request.path }}"
+            style="margin-left: 10px; text-decoration: none; color: white"
+            >EN</a
+          >
+          <a
+            href="{% url 'set_language' %}?lang=hi&next={{ request.path }}"
+            style="margin-left: 10px; text-decoration: none; color: white"
+            >HI</a
+          >
+        </div>
       </div>
     </header>
-
     <main class="container">{% block content %}{% endblock %}</main>
   </body>
 </html>

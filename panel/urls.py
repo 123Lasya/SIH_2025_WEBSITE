@@ -17,6 +17,7 @@ urlpatterns = [
 
     path("export/contracts/csv/", views.export_contracts_csv, name="admin_export_contracts_csv"),
     path("export/contracts/excel/", views.export_contracts_excel, name="admin_export_contracts_excel"),
+    path("hedge-summary/", views.admin_hedge_summary, name="admin_hedge_summary"),
 
     path("export/hedges/csv/", views.export_hedges_csv, name="admin_export_hedges_csv"),
     path("export/hedges/excel/", views.export_hedges_excel, name="admin_export_hedges_excel"),

@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +29,7 @@ SECRET_KEY = 'django-insecure-&fz-*@rzpy182y56mi6r+avyiko6pp1^+zke-z8^2$phzg_rw%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.162.230.109:8080', 'localhost','0.0.0.0','10.162.230.109:8000','10.162.230.109','127.0.0.1:8000','127.0.0.1']
 
 
 # Application definition
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'core.middleware.LanguageTemplateMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,3 +152,14 @@ EMAIL_HOST_USER = "tolearndsain30days@gmail.com"
 EMAIL_HOST_PASSWORD = "hiwb mvih nwzd zrio"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# blockchain
+WEB3_RPC_URL = os.getenv("WEB3_RPC_URL")
+WEB3_PRIVATE_KEY = os.getenv("WEB3_PRIVATE_KEY")
+WEB3_PUBLIC_ADDRESS = os.getenv("WEB3_PUBLIC_ADDRESS")
+
+ERC20_TOKEN_ADDRESS = os.getenv("ERC20_TOKEN_ADDRESS")
+FORWARD_CONTRACT_ADDRESS = os.getenv("FORWARD_CONTRACT_ADDRESS")
+HEDGE_CONTRACT_ADDRESS = os.getenv("HEDGE_CONTRACT_ADDRESS")
+
+PINATA_JWT = os.getenv("PINATA_JWT")

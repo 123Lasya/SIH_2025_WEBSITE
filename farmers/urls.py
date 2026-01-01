@@ -23,9 +23,15 @@ urlpatterns = [
 
     # GOV SUPPORT
     path('gov-support/', views.farmer_gov_support, name='farmer_gov_support'),
-
     # PROFILE VIEW + EDIT
     path('profile/', views.farmer_profile, name='farmer_profile'),
     path('profile/edit/', views.farmer_profile_edit, name='farmer_profile_edit'),
-     path("forecast-api/", views.get_forecast_data, name="forecast_api"),
+    path("forecast-api/", views.get_forecast_data, name="forecast_api"),
+    path("mtm-history/", views.farmer_mtm_history, name="farmer_mtm_history"),
+    path("hedge/<int:hedge_id>/", views.farmer_hedge_detail, name="farmer_hedge_detail"),
+    path("ajax/predict-price/", views.ajax_predict_price, name="ajax_predict_price"),
+    path("hedge/preview/", views.farmer_hedge_margin_preview, name="farmer_hedge_margin_preview"),
+    path("hedge/confirm/", views.farmer_hedge_confirm, name="farmer_hedge_confirm"),
+    path("mtm-history/", views.farmer_mtm_history, name="farmer_mtm_history"),
+
 ]

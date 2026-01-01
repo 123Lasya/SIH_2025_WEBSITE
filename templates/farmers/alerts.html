@@ -10,7 +10,28 @@
     font-family: "Inter", sans-serif;
   }
 
-  /* CARD WRAPPER */
+  /* DUMMY ALERT CARD */
+  .live-alert-card {
+    background: #f0f7ff;
+    border-left: 6px solid #0b2348;
+    padding: 18px 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.7s ease-out;
+  }
+  .live-alert-title {
+    color: #0b2348;
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 18px;
+  }
+  .live-alert-msg {
+    font-size: 15px;
+    color: #475569;
+  }
+
+  /* REAL ALERT CARD WRAPPER */
   .alert-card {
     background: #ffffff;
     padding: 25px;
@@ -68,9 +89,7 @@
     font-weight: 600;
     font-size: 14px;
     display: inline-block;
-    text-align: center;
   }
-
   .status-read {
     background: #e5e7eb;
     color: #374151;
@@ -79,7 +98,6 @@
     font-weight: 600;
     font-size: 14px;
     display: inline-block;
-    text-align: center;
   }
 
   /* BUTTON */
@@ -94,18 +112,66 @@
     font-weight: 600;
     transition: 0.25s ease;
     text-decoration: none;
-    display: inline-block;
   }
-
   .view-btn:hover {
     background: #0e3b78;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   }
+
+  /* animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+    }
+  }
 </style>
 
 <h2 class="alerts-title">Alerts</h2>
 
+<!-- ===================== DUMMY LIVE ALERTS (SAFE) ===================== -->
+<div class="live-alert-card">
+  <div class="live-alert-title">
+    Weather Update: Light Rain Expected Tomorrow
+  </div>
+  <div class="live-alert-msg">
+    Rainfall expected in your district. Farmers are advised to cover stored
+    produce.
+  </div>
+</div>
+
+<div class="live-alert-card">
+  <div class="live-alert-title">
+    Price Alert: Groundnut Prices Increased by 6%
+  </div>
+  <div class="live-alert-msg">
+    Market shows upward trend. Consider selling if stock is ready.
+  </div>
+</div>
+
+<div class="live-alert-card">
+  <div class="live-alert-title">Soybean Rates Dropped Today</div>
+  <div class="live-alert-msg">
+    Soybean prices fell by ₹120/quintal. Market expected to stabilize by
+    weekend.
+  </div>
+</div>
+
+<div class="live-alert-card">
+  <div class="live-alert-title">
+    FPO Advisory: Government Scheme Enrollment Open
+  </div>
+  <div class="live-alert-msg">
+    New subsidy scheme for oilseed farmers is now available. Apply through your
+    FPO.
+  </div>
+</div>
+
+<!-- ===================== REAL SYSTEM-GENERATED ALERTS (BACKEND DATA) ===================== -->
 <div class="alert-card">
   {% if alerts %}
   <table class="alert-table">
@@ -148,7 +214,7 @@
   </table>
 
   {% else %}
-  <p>No alerts yet.</p>
+  <p>No system alerts yet.</p>
   {% endif %}
 </div>
 

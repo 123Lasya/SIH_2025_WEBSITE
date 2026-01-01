@@ -1,389 +1,499 @@
-<!-- prettier-igonor -->
-{% extends 'base.html' %} {% block main_class %}homepage-container{% endblock %}
-{% block title %}Home | Krushi Kisan Suraksha{% endblock %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Krushi Kisan Suraksha</title>
 
-<!-- ===================== IN-PAGE CSS ===================== -->
-<style>
-  body {
-    font-family: "Inter", sans-serif;
-  }
+    <style>
+      /* RESET */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  /* ====== HERO SECTION ====== */
-  .hero-section {
-    background: linear-gradient(135deg, #081a36, #0b2348, #0b2348);
-    background-size: 300% 300%;
-    animation: gradientShift 18s ease infinite;
-    padding: 90px 20px;
-    text-align: center;
-    color: white;
-    margin: 0px;
-    border-radius: 0px;
-  }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f5f7fa;
+      }
 
-  .hero-title {
-    font-size: 42px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards;
-  }
+      /* ===================== NAVBAR ===================== */
+      nav {
+        height: 70px;
+        width: 100%;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(to right, #0b2348, #193a63);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
 
-  .hero-subtext {
-    font-size: 18px;
-    opacity: 0;
-    margin-bottom: 30px;
-    line-height: 1.5;
-    animation: fadeUp 1.1s ease forwards;
-  }
+      .brand-logo {
+        font-size: 26px;
+        font-weight: 800;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+      }
 
-  .primary-btn,
-  .secondary-btn {
-    padding: 12px 26px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 12px;
-    margin: 8px;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease,
-      background-color 0.25s ease, border-color 0.25s ease;
-    text-decoration: none;
-    display: inline-block;
-  }
+      .nav-links {
+        display: none;
+        gap: 28px;
+      }
 
-  .primary-btn {
-    background: #ffffff;
-    color: #0b2348;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  }
+      .nav-links a {
+        color: white;
+        padding: 9px 18px;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 10px;
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.08);
+        text-decoration: none;
+        transition: 0.25s ease;
+      }
 
-  .primary-btn:hover {
-    background: #f3f4ff;
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
-  }
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-2px);
+      }
 
-  .secondary-btn {
-    background: transparent;
-    border: 2px solid #ffffff;
-    color: #ffffff;
-  }
+      /* HAMBURGER */
+      .menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+      }
 
-  .secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-  }
+      @media (min-width: 768px) {
+        .nav-links {
+          display: flex;
+        }
+        .menu-btn {
+          display: none;
+        }
+      }
 
-  /* ====== FEATURES SECTION ====== */
-  .features-title {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 30px;
-    font-weight: 800;
-    color: #0b2348;
-  }
+      /* MOBILE MENU */
+      .mobile-menu {
+        display: none;
+        width: 100%;
+        background: linear-gradient(to right, #0b2348, #193a63);
+        padding: 20px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        z-index: 900;
+      }
 
-  .feature-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 30px;
-    padding: 0 20px;
-  }
+      .mobile-menu a {
+        display: block;
+        color: white;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+        transition: 0.25s ease;
+      }
 
-  .feature-card {
-    background: rgba(255, 255, 255, 0.9);
-    width: 300px;
-    padding: 26px;
-    border-radius: 18px;
-    border: 1px solid #e6e6e6;
-    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.12);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-    opacity: 0;
-    transform: translateY(24px);
-  }
+      .mobile-menu a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
 
-  .feature-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+      /* ===================== HERO ===================== */
+      .hero-section {
+        width: 100%;
+        height: 92vh;
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.55)
+          ),
+          url("https://storage.googleapis.com/cgiarorg/2020/09/9c639723-seed-consortium-to.jpg");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+      }
 
-  .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 14px 32px rgba(0, 0, 0, 0.22);
-  }
+      .hero-title {
+        font-size: 46px;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
 
-  .feature-card svg {
-    transition: transform 0.3s ease, filter 0.3s ease;
-  }
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 32px;
+        }
+      }
 
-  .feature-card:hover svg {
-    transform: translateY(-3px);
-    filter: drop-shadow(0 0 8px rgba(43, 163, 122, 0.7));
-  }
+      .hero-subtext {
+        font-size: 18px;
+        opacity: 0.9;
+        margin-bottom: 20px;
+      }
 
-  .feature-title {
-    font-size: 19px;
-    font-weight: 700;
-    color: #0b2348;
-    margin-top: 12px;
-  }
+      .primary-btn,
+      .secondary-btn {
+        padding: 12px 26px;
+        border-radius: 10px;
+        margin: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.25s ease;
+      }
 
-  .feature-text {
-    font-size: 15px;
-    color: #4b5563;
-    line-height: 1.6;
-  }
+      .primary-btn {
+        background: #ffffff;
+        color: #0b2348;
+      }
 
-  /* ====== FOOTER ====== */
-  .footer {
-    margin-top: 70px;
-    padding: 50px 40px;
-    background: #f8f9fc;
-    border-top: 1px solid #e2e8f0;
-    opacity: 0;
-    transform: translateY(24px);
-  }
+      .primary-btn:hover {
+        background: #eaf1ff;
+        transform: translateY(-2px);
+      }
 
-  .footer.visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+      .secondary-btn {
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+      }
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px;
-  }
+      .secondary-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
 
-  .footer-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #0b2348;
-    margin-bottom: 12px;
-  }
+      /* ===================== FEATURES ===================== */
+      .features-wrapper {
+        padding: 70px 20px;
+        text-align: center;
+      }
 
-  .footer-text,
-  .footer-link {
-    font-size: 14px;
-    color: #4b5563;
-    line-height: 1.6;
-    text-decoration: none;
-  }
+      .features-grid {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 26px;
+      }
 
-  .footer-link:hover {
-    color: #0b2348;
-    font-weight: 600;
-  }
+      @media (max-width: 900px) {
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
 
-  /* ====== ICON GRADIENT HELPERS ====== */
-  .icon-grad stop:first-child {
-    stop-color: #2ba37a;
-  }
-  .icon-grad stop:last-child {
-    stop-color: #0b2348;
-  }
+      @media (max-width: 600px) {
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-  /* ====== MEDIA ====== */
-  @media (max-width: 480px) {
-    .hero-title {
-      font-size: 32px;
-    }
-  }
+      .feature-card {
+        background: rgba(255, 255, 255, 0.85);
+        padding: 28px 20px;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+        transition: 0.3s ease;
+      }
 
-  /* ====== KEYFRAMES ====== */
-  @keyframes gradientShift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
+      }
 
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>
+      .feature-icon {
+        width: 55px;
+        height: 55px;
+        margin-bottom: 14px;
+      }
 
-<!-- ===================== HERO SECTION ===================== -->
-<div class="hero-section">
-  <h1 class="hero-title">Welcome to Krushi Kisan Suraksha</h1>
+      .feature-title {
+        color: #0b2348;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
 
-  <p class="hero-subtext">
-    This platform helps oilseed farmers manage price risk using hedging<br />
-    and smart contracts.
-  </p>
+      .feature-text {
+        font-size: 16px;
+        color: #4b5563;
+        line-height: 1.6;
+      }
 
-  <a href="/accounts/select-role/" class="primary-btn">Get Started</a>
-  <a href="#learn-more" class="secondary-btn">Learn More</a>
-</div>
+      /* ===================== PREMIUM FOOTER ===================== */
+      .footer-section {
+        background: #0b2348;
+        color: white;
+        padding: 60px 20px 30px;
+        margin-top: 60px;
+      }
 
-<!-- ===================== FEATURES SECTION ===================== -->
-<h2 class="features-title" id="learn-more">Why this platform?</h2>
+      .footer-container {
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 40px;
+      }
 
-<div class="feature-grid">
-  <!-- CARD 1 -->
-  <div class="feature-card reveal-on-scroll">
-    <svg width="42" height="42" viewBox="0 0 24 24">
-      <defs>
-        <linearGradient
-          id="grad1"
-          class="icon-grad"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
-          <stop offset="0%" />
-          <stop offset="100%" />
-        </linearGradient>
-      </defs>
+      .footer-title {
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
 
-      <polyline
-        points="4 17 9 12 13 16 20 9"
-        fill="none"
-        stroke="url(#grad1)"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
+      .footer-heading {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
 
-    <div class="feature-title">AI-based price prediction for 7 days.</div>
-    <p class="feature-text">
-      Helps farmers plan sales and protect income from short-term price
-      volatility.
-    </p>
-  </div>
+      .footer-text {
+        font-size: 15px;
+        opacity: 0.85;
+        line-height: 1.6;
+      }
 
-  <!-- CARD 2 -->
-  <div class="feature-card reveal-on-scroll">
-    <svg width="40" height="40" viewBox="0 0 24 24">
-      <defs>
-        <linearGradient
-          id="grad2"
-          class="icon-grad"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
-          <stop offset="0%" />
-          <stop offset="100%" />
-        </linearGradient>
-      </defs>
+      .footer-link {
+        color: #dbeafe;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+        transition: 0.25s ease;
+      }
 
-      <path
-        d="M12 2l8 4v6c0 5.25-3.5 10.5-8 12-4.5-1.5-8-6.75-8-12V6l8-4z"
-        fill="url(#grad2)"
-      />
-    </svg>
+      .footer-link:hover {
+        color: #ffffff;
+        transform: translateX(4px);
+      }
 
-    <div class="feature-title">
-      Digital hedging contracts between farmers and buyers.
-    </div>
-    <p class="feature-text">
-      Transparent, tamper-resistant contracts that secure both farmer and buyer
-      terms.
-    </p>
-  </div>
+      .footer-bottom {
+        text-align: center;
+        margin-top: 35px;
+        padding-top: 18px;
+        font-size: 14px;
+        opacity: 0.75;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      }
+    </style>
+  </head>
 
-  <!-- CARD 3 -->
-  <div class="feature-card reveal-on-scroll">
-    <svg width="40" height="40" viewBox="0 0 24 24">
-      <defs>
-        <linearGradient
-          id="grad3"
-          class="icon-grad"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
-          <stop offset="0%" />
-          <stop offset="100%" />
-        </linearGradient>
-      </defs>
+  <body>
+    <!-- ===================== NAVBAR ===================== -->
+    <nav>
+      <a href="/" class="brand-logo">KrishiSetu</a>
 
-      <rect x="7" y="3" width="10" height="18" rx="2" fill="url(#grad3)" />
-    </svg>
+      <div class="nav-links">
+        {% if user.is_authenticated %}
+        <a href="/accounts/logout/">Logout</a>
 
-    <div class="feature-title">Secure storage (Blockchain ready).</div>
-    <p class="feature-text">
-      All agreements and records are stored securely with future-ready
-      blockchain integration.
-    </p>
-  </div>
-</div>
+        {% if user.is_staff or user.is_superuser %}
+        <a href="/panel/dashboard/">Admin Panel</a>
+        {% elif user.farmerprofile|default:None %}
+        <a href="/farmer/dashboard/">Dashboard</a>
+        {% elif user.buyerbusinessprofile|default:None or
+        user.buyertraderprofile|default:None %}
+        <a href="/buyer/dashboard/">Dashboard</a>
+        {% endif %} {% else %}
+        <a href="/">Home</a>
+        <a href="/accounts/login/">Login</a>
+        <a href="/accounts/select-role/">Signup</a>
+        {% endif %}
+      </div>
 
-<!-- ===================== FOOTER SECTION ===================== -->
-<div class="footer reveal-on-scroll">
-  <div class="footer-grid">
-    <div>
-      <div class="footer-title">About</div>
-      <p class="footer-text">
-        Government of India agricultural platform<br />
-        for farmer protection.
-      </p>
-    </div>
+      <button class="menu-btn">
+        <svg width="32" height="32">
+          <path
+            d="M4 8h24M4 16h24M4 24h24"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </nav>
 
-    <div>
-      <div class="footer-title">Support</div>
-      <a href="/help" class="footer-link">Help Center</a><br />
-      <a href="/contact" class="footer-link">Contact Us</a><br />
-      <a href="/faq" class="footer-link">FAQ</a>
-    </div>
+    <!-- ===================== MOBILE MENU ===================== -->
+    <div class="mobile-menu">
+      {% if user.is_authenticated %}
+      <a href="/accounts/logout/">Logout</a>
 
-    <div>
-      <div class="footer-title">Legal</div>
-      <a href="/terms" class="footer-link">Terms</a><br />
-      <a href="/privacy" class="footer-link">Privacy</a><br />
-      <a href="/disclaimer" class="footer-link">Disclaimer</a>
+      {% if user.is_staff or user.is_superuser %}
+      <a href="/panel/dashboard/">Admin Panel</a>
+      {% elif user.farmerprofile|default:None %}
+      <a href="/farmer/dashboard/">Dashboard</a>
+      {% elif user.buyerbusinessprofile|default:None or
+      user.buyertraderprofile|default:None %}
+      <a href="/buyer/dashboard/">Dashboard</a>
+      {% endif %} {% else %}
+      <a href="/">Home</a>
+      <a href="/accounts/login/">Login</a>
+      <a href="/accounts/select-role/">Signup</a>
+      {% endif %}
     </div>
 
-    <div>
-      <div class="footer-title">Contact</div>
-      <p class="footer-text">
-        Email:<br />
-        support@krishisetu.gov.in<br /><br />
-        Phone: 1800-KRISHISETU
-      </p>
+    <!-- ===================== HERO ===================== -->
+    <div class="hero-section">
+      <div>
+        <h1 class="hero-title">Welcome to KrishiSetu</h1>
+        <p class="hero-subtext">
+          Empowering farmers with digital hedging tools for price protection.
+        </p>
+
+        <a href="/accounts/select-role/" class="primary-btn">Get Started</a>
+        <a href="#learn-more" class="secondary-btn">Learn More</a>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ===================== ANIMATION JS ===================== -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const revealElements = document.querySelectorAll(".reveal-on-scroll");
+    <!-- ===================== FEATURES GRID ===================== -->
+    <div class="features-wrapper" id="learn-more">
+      <h2
+        style="
+          font-size: 32px;
+          font-weight: 800;
+          color: #0b2348;
+          margin-bottom: 30px;
+        "
+      >
+        Platform Highlights
+      </h2>
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
+      <div class="features-grid">
+        <!-- CARD 1 -->
+        <div class="feature-card">
+          <svg
+            class="feature-icon"
+            stroke="#0b2348"
+            fill="none"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M3 17l6-6 4 4 8-8" stroke-linecap="round"></path>
+          </svg>
+          <h3 class="feature-title">AI Price Prediction</h3>
+          <p class="feature-text">
+            Accurate 7-day price forecasts powered by AI for better crop
+            planning.
+          </p>
+        </div>
 
-    revealElements.forEach((el) => observer.observe(el));
-  });
-</script>
+        <!-- CARD 2 -->
+        <div class="feature-card">
+          <svg
+            class="feature-icon"
+            stroke="#0b2348"
+            fill="none"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2l7 4v6c0 5-3.5 10-7 11-3.5-1-7-6-7-11V6z"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+          <h3 class="feature-title">Digital Hedging Contracts</h3>
+          <p class="feature-text">
+            Secure and transparent digital agreements between farmers and
+            buyers.
+          </p>
+        </div>
 
-{% endblock %}
+        <!-- CARD 3 -->
+        <div class="feature-card">
+          <svg
+            class="feature-icon"
+            stroke="#0b2348"
+            fill="none"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <rect x="7" y="3" width="10" height="18" rx="2"></rect>
+          </svg>
+          <h3 class="feature-title">Secure Storage</h3>
+          <p class="feature-text">
+            Blockchain-ready storage ensures all records remain tamper-proof.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== UPDATED PREMIUM FOOTER ===================== -->
+    <footer class="footer-section">
+      <div class="footer-container">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="footer-title">KrishiSetu</h3>
+          <p class="footer-text">
+            A digital platform empowering Indian farmers with AI tools, hedging
+            contracts, and secure digital storage.
+          </p>
+        </div>
+
+        <!-- Column 2 -->
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <a href="/" class="footer-link">Home</a>
+          <a href="/accounts/login/" class="footer-link">Login</a>
+          <a href="/accounts/select-role/" class="footer-link">Signup</a>
+        </div>
+
+        <!-- Column 3 -->
+        <div>
+          <h4 class="footer-heading">Support</h4>
+          <a href="/faq" class="footer-link">FAQ</a>
+          <a href="/contact" class="footer-link">Contact Us</a>
+          <a href="/help" class="footer-link">Help Center</a>
+        </div>
+
+        <!-- Column 4 -->
+        <div>
+          <h4 class="footer-heading">Contact</h4>
+          <p class="footer-text">support@krishisetu.gov.in</p>
+          <p class="footer-text">Toll-Free: 1800-KRISHISETU</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 Krushi Kisan Suraksha — All Rights Reserved.
+      </div>
+    </footer>
+
+    <!-- ===================== MOBILE MENU SCRIPT ===================== -->
+    <script>
+      const menuBtn = document.querySelector(".menu-btn");
+      const mobileMenu = document.querySelector(".mobile-menu");
+
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.style.display =
+          mobileMenu.style.display === "block" ? "none" : "block";
+      });
+
+      document.addEventListener("click", (event) => {
+        if (
+          !event.target.closest("nav") &&
+          !event.target.closest(".mobile-menu")
+        ) {
+          mobileMenu.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
