@@ -1,30 +1,30 @@
-# 🌾 AI + Blockchain for Farmers  
+#  AI + Blockchain for Farmers  
 Smart India Hackathon Grand Finale Project  
 
-## 📌 Overview  
+##  Overview  
 This project is a **web-based platform** that combines **Artificial Intelligence (AI)** and **Blockchain technology** to help farmers manage risks through **hedging strategies**. By predicting commodity price trends and enabling transparent contracts, the solution empowers farmers to achieve **income stability, trust, and financial security**.  
 
 ---
 
-## 🚀 Features  
-- 🌾 **Farmer-Centric Hedging**  
+##  Features  
+-  **Farmer-Centric Hedging**  
   Simple, intuitive interface for farmers to manage crop price risks.  
 
-- 🤖 **AI-Powered Insights**  
+-  **AI-Powered Insights**  
   Predictive analytics for commodity trends and decision support.  
 
-- 🔗 **Blockchain Security**  
+-  **Blockchain Security**  
   Tamper-proof smart contracts for transparency and accountability.  
 
-- 📊 **Risk Management Tools**  
+-  **Risk Management Tools**  
   Dashboards to monitor hedging strategies and financial outcomes.  
 
-- 🌍 **Scalable & Inclusive**  
+-  **Scalable & Inclusive**  
   Designed to be accessible, secure, and adaptable for diverse farming communities.  
 
 ---
 
-## 🛠️ Tech Stack  
+##  Tech Stack  
 - **Frontend:** HTML, CSS, Bootstrap, JavaScript  
 - **Backend:** Django  
 - **Database:** MySQL  
@@ -33,7 +33,7 @@ This project is a **web-based platform** that combines **Artificial Intelligence
 
 ---
 
-## 🎯 Impact  
+##  Impact  
 - Helps farmers **reduce risks** from price fluctuations.  
 - Builds **trust** through blockchain-based contracts.  
 - Provides **data-driven insights** for better decision-making.  
@@ -41,6 +41,6 @@ This project is a **web-based platform** that combines **Artificial Intelligence
 
 ---
 
-## 👥 Team  
-Developed by ** Lasya Mandadapu ** for the **Smart India Hackathon Grand Finale**.  
+##  Team  
+Developed by **Lasya Mandadapu** for the **Smart India Hackathon Grand Finale**.  
 
